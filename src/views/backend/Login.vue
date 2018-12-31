@@ -23,8 +23,8 @@
       return {
         logining: false,
         ruleForm2: {
-          account: 'admin',
-          checkPass: '123456'
+          account: '',
+          checkPass: ''
         },
         rules2: {
           account: [
@@ -50,19 +50,29 @@
             //_this.$router.replace('/table');
             this.logining = true;
             //NProgress.start();
-            var loginParams = { username: this.ruleForm2.account, password: this.ruleForm2.checkPass };
-            requestLogin(loginParams).then(data => {
+            var loginParams = { user: this.ruleForm2.account, password: this.ruleForm2.checkPass };
+            requestLogin(loginParams).then(datas => {
               this.logining = false;
               //NProgress.done();
-              let { msg, code, user } = data;
-              if (code !== 200) {
+              let { msg, code, data } = datas;
+              if(code === 0)
+              {
+                sessionStorage.setItem('user', JSON.stringify(data));
+                this.$router.push({ path: '/fu/login' });
+              }
+              else if(code === 5)
+              {
                 this.$message({
-                  message: msg,
+                  message: '请输入用户名和密码',
                   type: 'error'
                 });
-              } else {
-                sessionStorage.setItem('user', JSON.stringify(user));
-                this.$router.push({ path: '/table' });
+              }
+              else
+              {
+                this.$message({
+                  message: '用户名或密码错误！',
+                  type: 'error'
+                });
               }
             });
           } else {

@@ -72,13 +72,14 @@
 </template>
 
 <script>
+import '../../assets/plugins/console'
 export default {
   data () {
     return {
       sysName: '云·实验室中心',
       collapsed: false,
-      sysUserName: '',
-      sysUserAvatar: '',
+      sysUserName: 'Saya',
+      sysUserAvatar: '/static/picture/user2.jpg',
       form: {
         name: '',
         region: '',
@@ -131,14 +132,14 @@ export default {
     var user = sessionStorage.getItem('user')
     if (user) {
       user = JSON.parse(user)
-      this.sysUserName = user.name || ''
-      this.sysUserAvatar = user.avatar || ''
+      this.sysUserName = user.user || ''
+      this.sysUserAvatar = user.logo || ''
     }
     else {
       this.sysUserName = 'Saya'
       this.sysUserAvatar = '/static/picture/user2.jpg'
     }
-  }
+  },
 }
 
 </script>

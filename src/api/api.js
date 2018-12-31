@@ -1,10 +1,12 @@
 import axios from 'axios';
 
 let base = '';
+// 后台api接口
+let backendAPI = '/backend';
 
-export const requestLogin = params => { return axios.post(`${base}/login`, params).then(res => res.data); };
+export const requestLogin = params => { return axios.post(`${backendAPI}/login`, params).then(res => res.data); };
 
-export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }); };
+export const getLogList = params => { return axios.post(`${backendAPI}/api/set/log`, params ).then(res => res.data);; };
 
 export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
 
