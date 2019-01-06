@@ -1,12 +1,20 @@
 import axios from 'axios';
-
 let base = '';
 // 后台api接口
 let backendAPI = '/backend';
 
+// 登录接口
 export const requestLogin = params => { return axios.post(`${backendAPI}/login`, params).then(res => res.data); };
-
-export const getLogList = params => { return axios.post(`${backendAPI}/api/set/log`, params ).then(res => res.data);; };
+// 注销接口
+export const requestLogout = params => { return axios.post(`${backendAPI}/logout`, params).then(res => res.data); };
+// 获取日志接口
+export const getLogList = params => { return axios.post(`${backendAPI}/api/set/log`, params ).then(res => res.data); };
+// 获取日志类别接口
+export const getLogType = params => { return axios.post(`${backendAPI}/api/set/logtype`,params ).then(res => res.data); };
+// 导出日志
+export const downloadLogExcel = `${backendAPI}/api/set/log/excel`
+// 上传头像
+export const uploadLogo = params => { return axios.post(`${backendAPI}/api/set/uploadlogo`,params ).then(res => res.data); };
 
 export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
 

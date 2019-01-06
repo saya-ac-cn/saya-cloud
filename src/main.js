@@ -9,7 +9,6 @@ import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import 'font-awesome/css/font-awesome.min.css'
 import VueWechatTitle from 'vue-wechat-title'
-
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)

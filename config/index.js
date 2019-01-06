@@ -1,7 +1,8 @@
 'use strict'
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
-
+// 引入配置
+const vars = require('../src/vars/vars');
 const path = require('path')
 
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/backend': {
-        target: 'http://127.0.0.1:8080', //设置调用接口域名和端口号别忘了加http
+        target: vars.backendApi, //设置调用接口域名和端口号别忘了加http
         changeOrigin: true
       },
     },

@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import BackendLayout from '@/views/layout/Backend'
-import HelloWorld from '@/views/HelloWorld'
+import HelloWorld from '@/views/backend/UploadLogo'
 import Login from '@/views/backend/Login'
 import Log from '@/views/backend/Log'
+import info from '@/views/backend/BasicInfo'
 
 Vue.use(Router)
 
@@ -28,7 +29,7 @@ export default new Router({
       name: '系统设置',
       iconCls: 'fa el-icon-setting', // 图标样式class
       children: [
-        { path: '/fu/login', component: Login, name: '基本信息', hidden: false ,meta:{title: baseName + '基本信息'}},
+        { path: '/set/info', component: info, name: '基本信息', hidden: false ,meta:{title: baseName + '基本信息'}},
         { path: '/set/log', component: Log, name: '操作日志', hidden: false ,meta:{title: baseName + '操作日志'}}
       ]
     },

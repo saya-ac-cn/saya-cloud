@@ -58,7 +58,7 @@
               if(code === 0)
               {
                 sessionStorage.setItem('user', JSON.stringify(data));
-                this.$router.push({ path: '/fu/login' });
+                this.$router.push({ path: '/set/info' });
               }
               else if(code === 5)
               {

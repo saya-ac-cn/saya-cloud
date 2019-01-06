@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import { requestLogout} from '../../api/api';
 import '../../assets/plugins/console'
 export default {
   data () {
@@ -110,8 +111,10 @@ export default {
       this.$confirm('确认退出吗?', '提示', {
         // type: 'warning'
       }).then(() => {
-        sessionStorage.removeItem('user')
-        _this.$router.push('/login')
+        requestLogout('').then((datas) => {
+          sessionStorage.removeItem('user')
+          _this.$router.push('/login')
+        })
       }).catch(() => {
       })
     },

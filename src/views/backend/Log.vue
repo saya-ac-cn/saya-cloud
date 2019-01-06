@@ -4,7 +4,15 @@
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true" :model="filters">
         <el-form-item>
-          <el-input v-model="filters.type" placeholder="姓名"></el-input>
+          <el-select v-model="filters.selectType" placeholder="请选择" @change="selectChange">
+            <el-option value="null" label="请选择" selected></el-option>
+            <el-option
+              v-for="item in filters.type"
+              :key="item.type"
+              :label="item.describe"
+              :value="item.type">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-date-picker v-model="filters.date" @change="(value) => dataChangeHandler(value)" value-format="yyyy-MM-dd HH:mm:ss" type="datetimerange" start-placeholder="开始日期" end-placeholder="结束日期"  :default-time="['00:00:00', '23:59:59']">
@@ -13,14 +21,14 @@
         <el-form-item>
           <el-button type="primary" v-on:click="getLogs">查询</el-button>
         </el-form-item>
-        <!--<el-form-item>-->
-          <!--<el-button type="primary" @click="handleAdd">新增</el-button>-->
-        <!--</el-form-item>-->
+        <el-form-item>
+          <el-button type="primary" @click="downloadExcel">导出</el-button>
+        </el-form-item>
       </el-form>
     </el-col>
 
     <!--列表-->
-    <el-table :data="logs.slice((nowPage-1)*pageSize,nowPage*pageSize)" highlight-current-row v-loading="listLoading" style="width: 100%;">
+    <el-table :data="logs" highlight-current-row v-loading="listLoading" style="width: 100%;">
       <el-table-column type="index">
       </el-table-column>
       <el-table-column prop="user" label="用户">
@@ -52,7 +60,7 @@
 </template>
 
 <script>
-import { getLogList } from '../../api/api';
+import { getLogList, getLogType, downloadLogExcel } from '../../api/api';
 export default {
   name: 'Log',
   data()  {
@@ -62,7 +70,8 @@ export default {
         date: [],
         beginTime:'',// 搜索表单的开始时间
         endTime:'',// 搜索表单的结束时间
-        type: ''
+        type: [],// 系统返回的日志类别
+        selectType: ''//用户选择的日志类别
       },
       // 返回的单元格数据
       logs: [],
@@ -89,25 +98,51 @@ export default {
     },
     // 日期控件改变事件
     dataChangeHandler(value) {
-      console.log(Object.keys(value).length)
-      if (value === null || value.length <= 0){
+      if (JSON.stringify(value) === null || JSON.stringify(value) === 'null'){
         this.filters.beginTime = '';
         this.filters.endTime = '';
       } else {
         this.filters.beginTime = value[0];
         this.filters.endTime = value[1];
       }
-      console.log(value[0])
-      console.log(value[1])
-      console.log(this.filters)
       this.getLogs()
+    },
+    // select框改变事件
+    selectChange(ele){
+      if(ele == null ||ele == 'null') {
+        this.filters.selectType = null;
+      } else {
+        this.filters.selectType = ele.target.value;
+      }
+    },
+    //获取日志类别
+    getLogTypes() {
+      getLogType('').then((datas) => {
+        let { msg, code, data } = datas;
+        if(code === 0)
+        {
+          // 日志类别
+          this.filters.type = data;
+        }else if (code === -7) {
+          // 未登录或登录失效
+          sessionStorage.removeItem('user');
+          this.$router.push('/login');
+        } else {
+          this.$message({
+            message: '获取日志类别失败',
+            type: 'error'
+          });
+        }
+      });
     },
     //获取日志列表
     getLogs() {
       let para = {
         nowPage: this.nowPage,
+        type:this.filters.selectType,
         beginTime: this.filters.beginTime,
         endTime: this.filters.endTime,
+        pageSize: this.pageSize
       };
       this.listLoading = true;
       //NProgress.start();
@@ -120,19 +155,50 @@ export default {
           this.dataTotal = data.dateSum;
           // 表格数据
           this.logs = data.grid;
-        }
-        else
-        {
+        }else if (code === -7) {
+          // 未登录或登录失效
+          sessionStorage.removeItem('user');
+          this.$router.push('/login');
+        } else {
           this.$message({
             message: '暂无日志',
             type: 'error'
           });
         }
       });
+    },
+    //获取日志类别
+    downloadExcel() {
+      let para = {
+        type:this.filters.selectType,
+        beginTime: this.filters.beginTime,
+        endTime: this.filters.endTime
+      };
+      const form = document.createElement('form')
+      form.id = 'form'
+      form.name = 'form'
+      document.body.appendChild(form);
+      for(var obj in para) {
+        if(para.hasOwnProperty(obj)) {
+          var input = document.createElement('input');
+          input.tpye='hidden';
+          input.name = obj;
+          input.value = para[obj];
+          form.appendChild(input)
+        }
+      }
+      form.method = "GET";//请求方式
+      form.action = downloadLogExcel ;
+      form.submit();
+      document.body.removeChild(form);
+
     }
   },
   mounted() {
     this.getLogs();
+  },
+  created() {
+    this.getLogTypes();
   }
 }
 </script>
