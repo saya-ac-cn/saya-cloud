@@ -131,7 +131,7 @@
           } else {
             this.$message({
               showClose: true,
-              message: '暂无日志',
+              message: msg,
               type: 'error'
             });
           }

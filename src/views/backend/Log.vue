@@ -129,7 +129,7 @@ export default {
           this.$router.push('/login');
         } else {
           this.$message({
-            message: '获取日志类别失败',
+            message: msg,
             type: 'error'
           });
         }
@@ -161,7 +161,7 @@ export default {
           this.$router.push('/login');
         } else {
           this.$message({
-            message: '暂无日志',
+            message: msg,
             type: 'error'
           });
         }

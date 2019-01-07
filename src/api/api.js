@@ -15,7 +15,12 @@ export const getLogType = params => { return axios.post(`${backendAPI}/api/set/l
 export const downloadLogExcel = `${backendAPI}/api/set/log/excel`
 // 上传头像
 export const uploadLogo = params => { return axios.post(`${backendAPI}/api/set/uploadlogo`,params ).then(res => res.data); };
-
+// 获取个人信息
+export const getPersonal = params => { return axios.get(`${backendAPI}/api/set/personal`,params ).then(res => res.data); };
+// 修改密码
+export const setPassword = params => { return axios.put(`${backendAPI}/api/set/password`,params ).then(res => res.data); };
+// 修改用户信息
+export const setUserInfo = params => { return axios.put(`${backendAPI}/api/set/update`,params ).then(res => res.data); };
 export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
 
 export const removeUser = params => { return axios.get(`${base}/user/remove`, { params: params }); };
