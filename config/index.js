@@ -12,14 +12,20 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      // 访问后台Api代理
       '/backend': {
+        target: vars.backendApi, //设置调用接口域名和端口号别忘了加http
+        changeOrigin: true
+      },
+      // 访问文件服务器代理
+      '/files': {
         target: vars.backendApi, //设置调用接口域名和端口号别忘了加http
         changeOrigin: true
       },
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '127.0.0.1', // can be overwritten by process.env.HOST
     port: 80, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,

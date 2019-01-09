@@ -21,6 +21,9 @@ export const getPersonal = params => { return axios.get(`${backendAPI}/api/set/p
 export const setPassword = params => { return axios.put(`${backendAPI}/api/set/password`,params ).then(res => res.data); };
 // 修改用户信息
 export const setUserInfo = params => { return axios.put(`${backendAPI}/api/set/update`,params ).then(res => res.data); };
+// 上传笔记、消息图片
+export const updateNewsPicture = params => { return axios.post(`${backendAPI}/api/oss/updateNewsPicture`,params ).then(res => res.data); };
+
 export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
 
 export const removeUser = params => { return axios.get(`${base}/user/remove`, { params: params }); };

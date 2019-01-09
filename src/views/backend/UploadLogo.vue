@@ -67,15 +67,33 @@
       },
       change (e) {
         let files = e.target.files || e.dataTransfer.files;
-        if (!files.length) return;
-        this.panel = true;
-        this.picValue = files[0];
-        this.url = this.getObjectURL(this.picValue);
-        //每次替换图片要重新得到新的url
-        if(this.cropper){
-          this.cropper.replace(this.url);
+        if (files && files.length) {
+          var file = files[0];
+          if (/^image\/\w+$/.test(file.type)) {
+            this.panel = true;
+            this.picValue = files[0];
+            this.url = this.getObjectURL(this.picValue);
+            //每次替换图片要重新得到新的url
+            if(this.cropper){
+              this.cropper.replace(this.url);
+            }
+            this.panel = true;
+          } else {
+            this.$message({
+              showClose: true,
+              message: '请选择一个图片文件',
+              type: 'error'
+            });
+            return false;
+          }
+        } else {
+          this.$message({
+            showClose: true,
+            message: '请选择一个文件',
+            type: 'error'
+          });
+          return false;
         }
-        this.panel = true;
       },
       close (){
         this.panel = false;

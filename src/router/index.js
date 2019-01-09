@@ -5,7 +5,7 @@ import HelloWorld from '@/views/backend/UploadLogo'
 import Login from '@/views/backend/Login'
 import Log from '@/views/backend/Log'
 import info from '@/views/backend/BasicInfo'
-
+import editor from '@/views/backend/MarkDownUtils'
 Vue.use(Router)
 
 var baseName = 'saya.ac.cn-'
@@ -21,6 +21,15 @@ export default new Router({
       hidden: true,
       meta: {
         title: baseName + '统一认证入口'
+      }
+    },
+    {
+      path: '/editor',
+      component: editor,
+      name: '',
+      hidden: true,
+      meta: {
+        title: baseName + '在线编辑器'
       }
     },
     {
