@@ -23,6 +23,20 @@ export const setPassword = params => { return axios.put(`${backendAPI}/api/set/p
 export const setUserInfo = params => { return axios.put(`${backendAPI}/api/set/update`,params ).then(res => res.data); };
 // 上传笔记、消息图片
 export const updateNewsPicture = params => { return axios.post(`${backendAPI}/api/oss/updateNewsPicture`,params ).then(res => res.data); };
+// 获取动态
+export const getNewsList = params => { return axios.get(`${backendAPI}/api/message/news`,{ params: params } ).then(res => res.data); };
+// 发布动态
+export const publishNews = params => { return axios.post(`${backendAPI}/api/message/news/publish`,params ).then(res => res.data); };
+// 删除动态
+export const deleteNews = params => { return axios.delete(`${backendAPI}/api/message/news/delete`,{ params: params } ).then(res => res.data); };
+// 查询动态
+export const getNews = params => { return axios.get(`${backendAPI}/api/message/news/show`,{ params: params } ).then(res => res.data); };
+// 修改动态
+export const editNews = params => { return axios.put(`${backendAPI}/api/message/news/edit`,params ).then(res => res.data); };
+// 审核留言
+export const checkGuestBook = params => { return axios.put(`${backendAPI}/api/message/guestbook/check`,params ).then(res => res.data); };
+// 查看分页留言
+export const getGuestBookList = params => { return axios.get(`${backendAPI}/api/message/guestbook`,{ params: params } ).then(res => res.data); };
 
 export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
 

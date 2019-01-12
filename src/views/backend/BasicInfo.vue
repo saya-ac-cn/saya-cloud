@@ -1,89 +1,108 @@
 <template>
-  <el-row>
-    <el-tabs v-model="activeName" :tab-position="tabPosition" v-loading="listLoading" @tab-click="handleClick">
-      <el-tab-pane label="查看资料" name="first">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span>查看资料</span>
-          </div>
-          <div>
-            <el-form ref="form" :model="form1" label-position="left" label-width="80px">
-              <el-form-item label="用户名">
-                <el-input v-model="form1.user" disabled disabled class="info-input-simpl"></el-input>
-              </el-form-item>
-              <el-form-item label="性别">
-                <el-input v-model="form1.sex" disabled class="info-input-simpl"></el-input>
-              </el-form-item>
-              <el-form-item label="邮箱">
-                <el-input v-model="form1.email" disabled class="info-input-simpl"></el-input>
-              </el-form-item>
-              <el-form-item label="qq">
-                <el-input v-model="form1.qq" disabled class="info-input-simpl"></el-input>
-              </el-form-item>
-              <el-form-item label="phone">
-                <el-input v-model="form1.phone" disabled class="info-input-simpl"></el-input>
-              </el-form-item>
-              <el-form-item label="生日">
-                <el-input v-model="form1.birthday" disabled class="info-input-simpl"></el-input>
-              </el-form-item>
-              <el-form-item label="故乡">
-                <el-input v-model="form1.hometown" disabled class="info-input-simpl"></el-input>
-              </el-form-item>
-            </el-form>
-          </div>
-        </el-card>
-      </el-tab-pane>
-      <el-tab-pane label="修改签名" name="second">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span>修改签名</span>
-          </div>
-          <div>
-            <el-form ref="form2" :model="form2" status-icon :rules="rules2" label-width="80px">
-              <el-form-item label="个性签名" prop="autograph">
-                <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 5}" v-model="form2.autograph"></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="submitForm('form2')">提交</el-button>
-                <el-button @click="resetForm('form2')">重置</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-        </el-card>
-      </el-tab-pane>
-      <el-tab-pane label="修改头像" name="third">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span>修改头像</span>
-          </div>
-          <div>
-            <UploadLogo></UploadLogo>
-          </div>
-        </el-card>
-      </el-tab-pane>
-      <el-tab-pane label="修改密码" name="fourth">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span>查看资料</span>
-          </div>
-          <div>
-            <el-form :model="form4" status-icon :rules="rules4" ref="form4" label-width="80px" >
-              <el-form-item label="密码" prop="pwd1">
-                <el-input type="password" v-model="form4.pwd1" class="info-input-simpl" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="确认密码" prop="pwd2">
-                <el-input type="password" v-model="form4.pwd2" class="info-input-simpl" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="submitForm('form4')">提交</el-button>
-                <el-button @click="resetForm('form4')">重置</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-        </el-card>
-      </el-tab-pane>
-    </el-tabs>
-  </el-row>
+  <section>
+    <div class="mytips">
+      <p>修改前的<a href="javascript:void(0)">提示</a>：</p>
+      <blockquote>
+        <p>
+          <i>1、查看资料栏目不允许修改。</i>
+        </p>
+        <p>
+          <i>2、修改签名栏目，用户可以填写的签名最多字数不超过140个（含标点）。</i>
+        </p>
+        <p>
+          <i>3、修改头像栏目，用户可以上传任意格式的图片，大小暂时没有限制。</i>
+        </p>
+        <p>
+          <i>4、修改密码栏目，用户填写的密码两次必须一致，长度在6至15个字符内。</i>
+        </p>
+      </blockquote>
+    </div>
+    <el-row>
+      <el-tabs v-model="activeName" :tab-position="tabPosition" v-loading="listLoading" @tab-click="handleClick">
+        <el-tab-pane label="查看资料" name="first">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>查看资料</span>
+            </div>
+            <div>
+              <el-form ref="form" :model="form1" label-position="left" label-width="80px">
+                <el-form-item label="用户名">
+                  <el-input v-model="form1.user" disabled disabled class="info-input-simpl"></el-input>
+                </el-form-item>
+                <el-form-item label="性别">
+                  <el-input v-model="form1.sex" disabled class="info-input-simpl"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱">
+                  <el-input v-model="form1.email" disabled class="info-input-simpl"></el-input>
+                </el-form-item>
+                <el-form-item label="qq">
+                  <el-input v-model="form1.qq" disabled class="info-input-simpl"></el-input>
+                </el-form-item>
+                <el-form-item label="phone">
+                  <el-input v-model="form1.phone" disabled class="info-input-simpl"></el-input>
+                </el-form-item>
+                <el-form-item label="生日">
+                  <el-input v-model="form1.birthday" disabled class="info-input-simpl"></el-input>
+                </el-form-item>
+                <el-form-item label="故乡">
+                  <el-input v-model="form1.hometown" disabled class="info-input-simpl"></el-input>
+                </el-form-item>
+              </el-form>
+            </div>
+          </el-card>
+        </el-tab-pane>
+        <el-tab-pane label="修改签名" name="second">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>修改签名</span>
+            </div>
+            <div>
+              <el-form ref="form2" :model="form2" status-icon :rules="rules2" label-width="80px">
+                <el-form-item label="个性签名" prop="autograph">
+                  <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 5}" v-model="form2.autograph"></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="submitForm('form2')">提交</el-button>
+                  <el-button @click="resetForm('form2')">重置</el-button>
+                </el-form-item>
+              </el-form>
+            </div>
+          </el-card>
+        </el-tab-pane>
+        <el-tab-pane label="修改头像" name="third">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>修改头像</span>
+            </div>
+            <div>
+              <UploadLogo></UploadLogo>
+            </div>
+          </el-card>
+        </el-tab-pane>
+        <el-tab-pane label="修改密码" name="fourth">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>查看资料</span>
+            </div>
+            <div>
+              <el-form :model="form4" status-icon :rules="rules4" ref="form4" label-width="80px" >
+                <el-form-item label="密码" prop="pwd1">
+                  <el-input type="password" v-model="form4.pwd1" class="info-input-simpl" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="pwd2">
+                  <el-input type="password" v-model="form4.pwd2" class="info-input-simpl" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="submitForm('form4')">提交</el-button>
+                  <el-button @click="resetForm('form4')">重置</el-button>
+                </el-form-item>
+              </el-form>
+            </div>
+          </el-card>
+        </el-tab-pane>
+      </el-tabs>
+    </el-row>
+  </section>
 </template>
 
 <script>

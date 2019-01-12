@@ -1,6 +1,6 @@
 <template>
   <div id="editor">
-    <mavon-editor style="height: 100%" ref="md" @imgAdd="$imgAdd"></mavon-editor>
+    <mavon-editor style="height: 100%" ref="md" v-model="news_content" @imgAdd="$imgAdd"></mavon-editor>
   </div>
 </template>
 <script>
@@ -9,12 +9,14 @@
   import 'mavon-editor/dist/css/index.css'
   export default {
     name: 'MarkDownUtils',
+    props: ["news_content"],
     components: {
       mavonEditor
       // or 'mavon-editor': mavonEditor
     },
     data(){
       return {
+       // news_content:'12'
       }
     },
     methods:{
@@ -31,7 +33,7 @@
             // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
             // $vm.$img2Url 详情见本页末尾
             console.log(data)
-            // replace(/\\/g,"/") 将url中\替换为/
+            // replace(/\\/g,"/") 将url中\替换为/ 后台已处理
             // this.$refs.md.$img2Url(pos, data.replace(/\\/g,"/"));
             this.$refs.md.$img2Url(pos, data);
           } else if (code === -7) {
@@ -53,7 +55,7 @@
 <style>
   #editor {
     margin: auto;
-    width: 80%;
+    width: 100%;
     height: 580px;
   }
 </style>

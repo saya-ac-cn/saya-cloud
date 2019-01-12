@@ -164,6 +164,7 @@
     margin: 0;
     padding: 0;
   }
+
   /*蓝色按钮,绝对定位*/
   .blueButton
   {

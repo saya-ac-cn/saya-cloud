@@ -6,8 +6,12 @@ import Login from '@/views/backend/Login'
 import Log from '@/views/backend/Log'
 import info from '@/views/backend/BasicInfo'
 import editor from '@/views/backend/MarkDownUtils'
-Vue.use(Router)
+import newsmane from '@/views/backend/NewsMana'
+import publishnews from '@/views/backend/PublishNews'
+import editnews from '@/views/backend/EditNews'
+import guestbook from '@/views/backend/GuestBook'
 
+Vue.use(Router)
 var baseName = 'saya.ac.cn-'
 
 export default new Router({
@@ -68,8 +72,10 @@ export default new Router({
       name: '对外公布',
       iconCls: 'fa el-icon-message', // 图标样式class
       children: [
-        { path: '/fu/login3', component: Login, name: '平台留言', hidden: false ,meta:{title: baseName + '登录3'}},
-        { path: '/fu/login31', component: Login, name: '消息动态', hidden: false ,meta:{title: baseName + '登录3'}}
+        { path: '/message/guestbook', component: guestbook, name: '平台留言', hidden: false ,meta:{title: baseName + '平台留言'}},
+        { path: '/message/news', component: newsmane, name: '消息动态', hidden: false ,meta:{title: baseName + '消息动态'}},
+        { path: '/message/news/publish', component: publishnews, name: '发布动态', hidden: true ,meta:{title: baseName + '发布动态'}},
+        { path: '/message/news/edit', component: editnews, name: '编辑动态', hidden: true ,meta:{title: baseName + '发布动态'}},
       ]
     },
     {
