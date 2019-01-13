@@ -144,6 +144,7 @@ export default {
     reloadPage (){
       // 重置查询条件
       this.filters.topic = ''
+      this.nowPage = 1
       this.filters.beginTime = ''
       this.filters.endTime = ''
       this.getNews()

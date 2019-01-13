@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { getNews, editNews } from '../../api/api';
+import { getNews, editNews,updateNewsPicture } from '../../api/api';
 import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 export default {
@@ -192,7 +192,7 @@ export default {
         if(code === 0)
         {
           this.news.topic = data.topic
-          this.news.label = (data.label).split(',')
+          this.news.label = (data.label).split(';')
           this.news.content = data.content
         }else if (code === -7) {
           // 未登录或登录失效

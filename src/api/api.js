@@ -22,7 +22,7 @@ export const setPassword = params => { return axios.put(`${backendAPI}/api/set/p
 // 修改用户信息
 export const setUserInfo = params => { return axios.put(`${backendAPI}/api/set/update`,params ).then(res => res.data); };
 // 上传笔记、消息图片
-export const updateNewsPicture = params => { return axios.post(`${backendAPI}/api/oss/updateNewsPicture`,params ).then(res => res.data); };
+export const updateNewsPicture = params => { return axios.post(`${backendAPI}/api/oss/picture/illustrated`,params ).then(res => res.data); };
 // 获取动态
 export const getNewsList = params => { return axios.get(`${backendAPI}/api/message/news`,{ params: params } ).then(res => res.data); };
 // 发布动态
@@ -37,6 +37,12 @@ export const editNews = params => { return axios.put(`${backendAPI}/api/message/
 export const checkGuestBook = params => { return axios.put(`${backendAPI}/api/message/guestbook/check`,params ).then(res => res.data); };
 // 查看分页留言
 export const getGuestBookList = params => { return axios.get(`${backendAPI}/api/message/guestbook`,{ params: params } ).then(res => res.data); };
+// 查看分页后的图片
+export const getPictureList = params => { return axios.get(`${backendAPI}/api/oss/picture`,{ params: params } ).then(res => res.data); };
+// 上传壁纸
+export const uploadWallpaper = `${backendAPI}/api/oss/picture/wallpaper`
+// 删除壁纸/插图
+export const deletePicture = params => { return axios.delete(`${backendAPI}/api/oss/picture/delete`,{ params: params } ).then(res => res.data); };
 
 export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
 

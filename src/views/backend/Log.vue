@@ -173,6 +173,7 @@ export default {
     reloadPage (){
       // 重置查询条件
       this.filters.selectType = null
+      this.nowPage = 1
       this.filters.beginTime = ''
       this.filters.endTime = ''
       this.getLogs()

@@ -232,6 +232,7 @@ export default {
       this.filters.name = ''
       this.filters.beginTime = ''
       this.filters.endTime = ''
+      this.nowPage = 1
       this.filters.selectType = null
       this.getGuestBook()
     },
