@@ -12,6 +12,7 @@ import editnews from '@/views/backend/EditNews'
 import guestbook from '@/views/backend/GuestBook'
 import wallpaper from '@/views/backend/Wallpaper'
 import illustration from '@/views/backend/Lllustration'
+import files from '@/views/backend/FileMana'
 
 Vue.use(Router)
 var baseName = 'saya.ac.cn-'
@@ -66,7 +67,7 @@ export default new Router({
       children: [
         { path: '/oss/picture/wallpaper', component: wallpaper, name: '图片壁纸', hidden: false ,meta:{title: baseName + '图片壁纸'}},
         { path: '/oss/picture/illustration', component: illustration, name: '文章插图', hidden: false ,meta:{title: baseName + '文章插图'}},
-        { path: '/main4', component: HelloWorld, name: '文档资料', hidden: false ,meta:{title: baseName + '登录1'}}
+        { path: '/oss/picture/files', component: files, name: '文档资料', hidden: false ,meta:{title: baseName + '文档资料'}}
       ]
     },
     {

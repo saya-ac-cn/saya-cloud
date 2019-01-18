@@ -43,6 +43,15 @@ export const getPictureList = params => { return axios.get(`${backendAPI}/api/os
 export const uploadWallpaper = `${backendAPI}/api/oss/picture/wallpaper`
 // 删除壁纸/插图
 export const deletePicture = params => { return axios.delete(`${backendAPI}/api/oss/picture/delete`,{ params: params } ).then(res => res.data); };
+// 上传文件
+export const uploadFile = `${backendAPI}/api/oss/files/upload`
+// 查看分页后的文件
+export const getFileList = params => { return axios.get(`${backendAPI}/api/oss/files`,{ params: params } ).then(res => res.data); };
+// 删除文件
+export const deleteFile = params => { return axios.delete(`${backendAPI}/api/oss/files/delete`,{ params: params } ).then(res => res.data); };
+// 修改文件
+export const editFile = params => { return axios.put(`${backendAPI}/api/oss/files/edit`,params ).then(res => res.data); };
+
 
 export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
 
