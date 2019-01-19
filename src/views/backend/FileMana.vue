@@ -17,7 +17,7 @@
           <el-button type="primary" v-on:click="reloadPage">重置</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">上传</el-button>
+          <el-button type="primary" v-on:click="handleAdd">上传</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -34,7 +34,7 @@
       </el-table-column>
       <el-table-column label="操作" width="150">
         <template slot-scope="scope">
-          <el-button type="success" icon="el-icon-download" size="small" title="下载" circle></el-button>
+          <el-button type="success" icon="el-icon-download" size="small" title="下载" @click="downloadFile(scope.row.id)" circle></el-button>
           <el-button type="primary" icon="el-icon-edit" size="small" title="显示&屏蔽" @click="handleEdit(scope.$index,scope.row)" circle></el-button>
           <el-button type="danger" icon="el-icon-delete" size="small" title="删除" @click="handleDel(scope.$index,scope.row)" circle></el-button>
         </template>
@@ -70,12 +70,12 @@
           multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过5M</div>
+          <div class="el-upload__tip" slot="tip">不能上传bat/exe文件，且不超过10M</div>
         </el-upload>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click.native="addFormVisible = false">取消</el-button>
-        <el-button type="primary" :loading="addLoading">上传</el-button>
+        <el-button type="primary" @click.native="uploadFiles" :loading="addLoading">上传</el-button>
       </div>
     </el-dialog>
 
@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import { getFileList, deleteFile, editFile, uploadFile } from '../../api/api';
+import { getFileList, deleteFile, editFile, uploadFile,downloadFileForAdmin} from '../../api/api';
 export default {
   name: 'filemana',
   data()  {
@@ -106,6 +106,7 @@ export default {
       // 是否显示加载
       listLoading: false,
       uploadUrl: uploadFile,
+      downloadUrl: downloadFileForAdmin,
       addLoading: false,
       addFormVisible: false,//上传界面是否显示
       //上传界面数据
@@ -142,6 +143,12 @@ export default {
     },
     handleAdd () {
       this.addFormVisible = true;
+    },
+    uploadFiles () {
+      this.$refs.upload.submit();
+      this.nowPage = 1
+      this.getFiles();
+      // this.$refs.upload.clearFiles()
     },
     // 表格页数改变事件
     handleCurrentChange(val) {
@@ -186,8 +193,7 @@ export default {
       getFileList(para).then((datas) => {
         this.listLoading = false;
         let { msg, code, data } = datas;
-        if(code === 0)
-        {
+        if(code === 0){
           // 总数据量
           this.dataTotal = data.dateSum;
           // 表格数据
@@ -290,6 +296,17 @@ export default {
       this.filters.endTime = ''
       this.getFiles()
     },
+    downloadFile(id){
+      // 下载文件
+      const form = document.createElement('form')
+      form.id = 'form'
+      form.name = 'form'
+      document.body.appendChild(form);
+      form.method = "GET";//请求方式
+      form.action = this.downloadUrl + id ;
+      form.submit();
+      document.body.removeChild(form);
+    }
   },
   mounted() {
     this.getFiles();

@@ -51,6 +51,8 @@ export const getFileList = params => { return axios.get(`${backendAPI}/api/oss/f
 export const deleteFile = params => { return axios.delete(`${backendAPI}/api/oss/files/delete`,{ params: params } ).then(res => res.data); };
 // 修改文件
 export const editFile = params => { return axios.put(`${backendAPI}/api/oss/files/edit`,params ).then(res => res.data); };
+// 下载文件
+export const downloadFileForAdmin = `${backendAPI}/api/oss/files/download/`
 
 
 export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
