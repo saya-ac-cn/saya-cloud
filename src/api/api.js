@@ -53,14 +53,25 @@ export const deleteFile = params => { return axios.delete(`${backendAPI}/api/oss
 export const editFile = params => { return axios.put(`${backendAPI}/api/oss/files/edit`,params ).then(res => res.data); };
 // 下载文件
 export const downloadFileForAdmin = `${backendAPI}/api/oss/files/download/`
-
-
-export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
-
-export const removeUser = params => { return axios.get(`${base}/user/remove`, { params: params }); };
-
-export const batchRemoveUser = params => { return axios.get(`${base}/user/batchremove`, { params: params }); };
-
-export const editUser = params => { return axios.get(`${base}/user/edit`, { params: params }); };
-
-export const addUser = params => { return axios.get(`${base}/user/add`, { params: params }); };
+// 创建笔记簿
+export const createNoteBook = params => { return axios.post(`${backendAPI}/api/message/notebook/create`,params ).then(res => res.data); };
+// 修改笔记簿
+export const updateNoteBook = params => { return axios.put(`${backendAPI}/api/message/notebook/edit`,params ).then(res => res.data); };
+// 删除笔记簿
+export const deleteNoteBook = params => { return axios.delete(`${backendAPI}/api/message/notebook/delete`,{ params: params } ).then(res => res.data); };
+// 获取笔记簿列表
+export const getNoteBookList = params => { return axios.get(`${backendAPI}/api/message/notebook`,{ params: params } ).then(res => res.data); };
+// 获取笔记簿
+export const getNoteBookGroup = params => { return axios.get(`${backendAPI}/api/message/notebook/group`,{ params: params } ).then(res => res.data); };
+// 查询单条笔记簿
+export const getNoteBook = params => { return axios.get(`${backendAPI}/api/message/notebook/show`,{ params: params } ).then(res => res.data); };
+// 创建笔记
+export const createNotes = params => { return axios.post(`${backendAPI}/api/message/notes/create`,params ).then(res => res.data); };
+// 修改笔记
+export const updateNotes = params => { return axios.put(`${backendAPI}/api/message/notes/edit`,params ).then(res => res.data); };
+// 删除笔记
+export const deleteNotes = params => { return axios.delete(`${backendAPI}/api/message/notes/delete`,{ params: params } ).then(res => res.data); };
+// 获取笔记
+export const getNotesList = params => { return axios.get(`${backendAPI}/api/message/notes`,{ params: params } ).then(res => res.data); };
+// 查询单条笔记
+export const getNotes = params => { return axios.get(`${backendAPI}/api/message/notes/show`,{ params: params } ).then(res => res.data); };

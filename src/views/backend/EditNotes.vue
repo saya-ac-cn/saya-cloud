@@ -1,28 +1,41 @@
 <template>
     <section v-loading="listLoading">
       <div class="mytips">
-        <p>平台发布动态<a href="javascript:void(0)">约定</a>：</p>
+        <p>平台发布笔记<a href="javascript:void(0)">约定</a>：</p>
         <blockquote>
           <p>
-            <i>1、动态标题必须填写。</i>
+            <i>1、笔记标题必须填写。</i>
           </p>
           <p>
             <i>2、标签可以填写也可以不填写，最多不超过3个标签。</i>
           </p>
           <p>
-            <i>3、动态内容必须填写，书写采用MarkDown语法。书写完毕后，建议到前台页面查看实际效果，以便造成格式不兼容。</i>
+            <i>3、笔记所属分类（笔记簿）必须选择</i>
+          </p>
+          <p>
+            <i>4、笔记内容必须填写，书写采用MarkDown语法。书写完毕后，建议到前台页面查看实际效果，以便造成格式不兼容。</i>
           </p>
         </blockquote>
       </div>
       <el-row>
-        <el-form ref="form" :model="news" status-icon :rules="rules1" label-width="80px">
+        <el-form ref="form" :model="notes" status-icon :rules="rules1" label-width="80px">
           <el-form-item label="标题" prop="topic">
-            <el-input type="text" v-model="news.topic" autocomplete="off" class="info-input-simpl"></el-input>
+            <el-input type="text" v-model="notes.topic" autocomplete="off" class="info-input-simpl"></el-input>
+          </el-form-item>
+          <el-form-item label="笔记分类" prop="selectName">
+            <el-select v-model="notes.selectName" @change="(value) =>selectChange(value)">
+              <el-option
+                v-for="item in notes.name"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="标签">
             <el-tag
               :key="tag"
-              v-for="tag in news.label"
+              v-for="tag in notes.label"
               closable
               :disable-transitions="false"
               @close="handleClose(tag)">
@@ -30,8 +43,8 @@
             </el-tag>
             <el-input
               class="input-new-tag"
-              v-if="news.label"
-              v-model="news.inputValue"
+              v-if="notes.label"
+              v-model="notes.inputValue"
               ref="saveTagInput"
               size="small"
               @keyup.enter.native="handleInputConfirm"
@@ -41,7 +54,7 @@
             <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
           </el-form-item>
           <el-form-item label="正文" prop="content">
-            <mavon-editor style="height: 100%" ref="md" v-model="news.content" @imgAdd="$imgAdd"></mavon-editor>
+            <mavon-editor style="height: 100%" ref="md" v-model="notes.content" @imgAdd="$imgAdd"></mavon-editor>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('form')">提交</el-button>
@@ -52,11 +65,11 @@
 </template>
 
 <script>
-import { getNews, editNews,updateNewsPicture } from '../../api/api';
+import { getNotes, updateNotes, getNoteBookGroup, updateNewsPicture } from '../../api/api';
 import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 export default {
-  name: 'EditNews',
+  name: 'EditNotes',
   components: {
     mavonEditor
   },
@@ -64,13 +77,15 @@ export default {
     return {
       // 是否显示加载
       listLoading: false,
-      news:{
+      notes:{
         id:null,
         topic: '',//标题
         label: [],//标签
         content: '',//正文
         inputVisible: false,
-        inputValue: ''
+        inputValue: '',
+        name: [],// 系统返回的笔记簿
+        selectName: ''//用户选择的笔记簿
       },
       rules1:{
         topic: [
@@ -79,28 +94,39 @@ export default {
         ],
         content: [
           { required: true, message: '请输入要发布的正文', trigger: 'blur' },
+        ],
+        selectName: [
+          { type:'number',required: true, message: '请选择分类', trigger: 'blur' }
         ]
       },
     }
   },
   methods: {
     handleClose(tag) {
-      this.news.label.splice(this.news.label.indexOf(tag), 1);
+      this.notes.label.splice(this.notes.label.indexOf(tag), 1);
     },
     showInput() {
-      this.news.inputVisible = true;
+      this.notes.inputVisible = true;
       this.$nextTick(_ => {
         console.log(this.$refs)
         this.$refs.saveTagInput.$refs.input.focus();
       });
     },
     handleInputConfirm() {
-      let inputValue = this.news.inputValue;
+      let inputValue = this.notes.inputValue;
       if (inputValue) {
-        this.news.label.push(inputValue);
+        this.notes.label.push(inputValue);
       }
-      this.news.inputVisible = false;
-      this.news.inputValue = '';
+      this.notes.inputVisible = false;
+      this.notes.inputValue = '';
+    },
+    // select框改变事件
+    selectChange(ele){
+      if(ele == null ||ele == 'null') {
+        this.notes.selectName = null;
+      } else {
+        this.notes.selectName = ele;
+      }
     },
     submitForm(formName) {
       if(formName === 'form'){
@@ -108,21 +134,22 @@ export default {
           if (valid) {
             // 允许修改
             var _thisTag = null
-            if (this.news.label.length > 1){
-              _thisTag = (this.news.label).join(';')
-            } else if(this.news.label.length = 1){
-              _thisTag = (this.news.label)[0]
+            if (this.notes.label.length > 1){
+              _thisTag = (this.notes.label).join(';')
+            } else if(this.notes.label.length = 1){
+              _thisTag = (this.notes.label)[0]
             } else {
               _thisTag = null
             }
             this.listLoading = true;
             let para = {
-              id: this.news.id,
-              topic: this.news.topic,
+              notebookId: this.notes.selectName,
+              id: this.notes.id,
+              topic: this.notes.topic,
               label: _thisTag,//标签
-              content: this.news.content
+              content: this.notes.content
             };
-            editNews(para).then((datas) => {
+            updateNotes(para).then((datas) => {
               this.listLoading = false;
               let { msg, code, data } = datas;
               if(code === 0)
@@ -181,19 +208,14 @@ export default {
         }
       })
     },
-    initData(){
-      this.listLoading = true;
-      let para = {
-        id: this.news.id
-      };
-      getNews(para).then((datas) => {
-        this.listLoading = false;
+    //获取该用户下笔记簿
+    getNoteBook() {
+      getNoteBookGroup('').then((datas) => {
         let { msg, code, data } = datas;
         if(code === 0)
         {
-          this.news.topic = data.topic
-          this.news.label = (data.label).split(';')
-          this.news.content = data.content
+          // 笔记类别
+          this.notes.name = data;
         }else if (code === -7) {
           // 未登录或登录失效
           sessionStorage.removeItem('user');
@@ -206,13 +228,40 @@ export default {
         }
       });
     },
-    getParams:function(){
+    initData(){
+      this.listLoading = true;
+      let para = {
+        id: this.notes.id
+      };
+      getNotes(para).then((datas) => {
+        this.listLoading = false;
+        let { msg, code, data } = datas;
+        if(code === 0)
+        {
+          this.notes.selectName = data.notebookId
+          this.notes.topic = data.topic
+          this.notes.label = (data.label).split(';')
+          this.notes.content = data.content
+        }else if (code === -7) {
+          // 未登录或登录失效
+          sessionStorage.removeItem('user');
+          this.$router.push('/login');
+        } else {
+          this.$message({
+            message: msg,
+            type: 'error'
+          });
+        }
+      });
+    },
+    getParams (){
       // 取到路由带过来的参数
-      this.news.id = this.$route.query.id
+      this.notes.id = this.$route.query.id
     },
   },
-  created:function(){
+  created (){
     this.getParams();
+    this.getNoteBook();
   },
   mounted() {
     this.initData()
