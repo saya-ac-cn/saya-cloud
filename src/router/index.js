@@ -17,6 +17,7 @@ import notebook from '@/views/backend/NoteBook'
 import notes from '@/views/backend/NotesMana'
 import publishnotes from '@/views/backend/PublishNotes'
 import editnotes from '@/views/backend/EditNotes'
+import planmana from '@/views/backend/PlanMana'
 
 Vue.use(Router)
 var baseName = 'saya.ac.cn-'
@@ -102,7 +103,7 @@ export default new Router({
       name: '成长发展',
       iconCls: 'fa el-icon-star-on', // 图标样式class
       children: [
-        { path: '/fu/login1', component: Login, name: '日程安排', hidden: false ,meta:{title: baseName + '登录3'}},
+        { path: '/set/plan', component: planmana, name: '日程安排', hidden: false ,meta:{title: baseName + '日程安排'}},
         { path: '/message/notebook', component: notebook, name: '笔记分类', hidden: false ,meta:{title: baseName + '笔记分类'}},
         { path: '/message/notes', component: notes, name: '便笺笔记', hidden: false ,meta:{title: baseName + '便笺笔记'}},
         { path: '/message/notes/publish', component: publishnotes, name: '创建笔记', hidden: true ,meta:{title: baseName + '创建笔记'}},

@@ -75,3 +75,11 @@ export const deleteNotes = params => { return axios.delete(`${backendAPI}/api/me
 export const getNotesList = params => { return axios.get(`${backendAPI}/api/message/notes`,{ params: params } ).then(res => res.data); };
 // 查询单条笔记
 export const getNotes = params => { return axios.get(`${backendAPI}/api/message/notes/show`,{ params: params } ).then(res => res.data); };
+// 获取该月计划
+export const getPlanList = params => { return axios.get(`${backendAPI}/api/set/plan`,{ params: params } ).then(res => res.data); };
+// 添加计划
+export const createPlan = params => { return axios.post(`${backendAPI}/api/set/plan/create`,params ).then(res => res.data); };
+// 修改计划
+export const updatePlan = params => { return axios.put(`${backendAPI}/api/set/plan/edit`,params ).then(res => res.data); };
+// 删除计划
+export const deletePlan = params => { return axios.delete(`${backendAPI}/api/set/plan/delete`,{ params: params } ).then(res => res.data); };
