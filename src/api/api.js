@@ -83,3 +83,7 @@ export const createPlan = params => { return axios.post(`${backendAPI}/api/set/p
 export const updatePlan = params => { return axios.put(`${backendAPI}/api/set/plan/edit`,params ).then(res => res.data); };
 // 删除计划
 export const deletePlan = params => { return axios.delete(`${backendAPI}/api/set/plan/delete`,{ params: params } ).then(res => res.data); };
+// 获取交易类别
+export const getFinancialType = params => { return axios.get(`${backendAPI}/api/financial/transactionType`,params ).then(res => res.data); };
+// 获取财政流水
+export const getTransactionList = params => { return axios.get(`${backendAPI}/api/financial/transaction`,{ params: params } ).then(res => res.data); };

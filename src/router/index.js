@@ -18,6 +18,7 @@ import notes from '@/views/backend/NotesMana'
 import publishnotes from '@/views/backend/PublishNotes'
 import editnotes from '@/views/backend/EditNotes'
 import planmana from '@/views/backend/PlanMana'
+import transactionlist from '@/views/backend/TransactionList'
 
 Vue.use(Router)
 var baseName = 'saya.ac.cn-'
@@ -93,7 +94,7 @@ export default new Router({
       name: '财务流水',
       iconCls: 'fa fa-bar-chart', // 图标样式class
       children: [
-        { path: '/fu/login2', component: Login, name: '流水报表', hidden: false ,meta:{title: baseName + '接口管理'}},
+        { path: '/financial/transactionlist', component: transactionlist, name: '财务流水', hidden: false ,meta:{title: baseName + '财务流水'}},
         { path: '/main2', component: HelloWorld, name: '财务统计', hidden: false ,meta:{title: baseName + '数据管理'}}
       ]
     },
