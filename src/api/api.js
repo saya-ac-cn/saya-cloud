@@ -87,3 +87,13 @@ export const deletePlan = params => { return axios.delete(`${backendAPI}/api/set
 export const getFinancialType = params => { return axios.get(`${backendAPI}/api/financial/transactionType`,params ).then(res => res.data); };
 // 获取财政流水
 export const getTransactionList = params => { return axios.get(`${backendAPI}/api/financial/transaction`,{ params: params } ).then(res => res.data); };
+// 财政申报
+export const applyTransaction = params => { return axios.post(`${backendAPI}/api/financial/insertTransaction`,params ).then(res => res.data); };
+// 修改流水
+export const updateTransaction = params => { return axios.put(`${backendAPI}/api/financial/updateTransaction`,params ).then(res => res.data); };
+// 删除流水
+export const deleteTransaction = params => { return axios.delete(`${backendAPI}/api/financial/deleteTransaction`,{ params: params } ).then(res => res.data); };
+// 导出流水
+export const downTransaction= `${backendAPI}/api/financial/outTransactionListExcel`
+// 导出流水明细
+export const outTransactionInfoExcel= `${backendAPI}/api/financial/outTransactionInfoExcel`
