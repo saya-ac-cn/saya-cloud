@@ -97,3 +97,6 @@ export const deleteTransaction = params => { return axios.delete(`${backendAPI}/
 export const downTransaction= `${backendAPI}/api/financial/outTransactionListExcel`
 // 导出流水明细
 export const outTransactionInfoExcel= `${backendAPI}/api/financial/outTransactionInfoExcel`
+// 获取流水明细
+export const getTransactionInfo = params => { return axios.get(`${backendAPI}/api/financial/transactionInfo`,{ params: params } ).then(res => res.data); };
+

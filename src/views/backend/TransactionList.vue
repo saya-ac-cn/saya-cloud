@@ -37,7 +37,7 @@
     </el-col>
 
     <!--列表-->
-    <el-table :data="logs" highlight-current-row v-loading="listLoading" style="width: 100%;">
+    <el-table :data="datas" highlight-current-row v-loading="listLoading" style="width: 100%;">
       <el-table-column prop="tradeId" label="流水号">
       </el-table-column>
       <el-table-column prop="deposited" label="存入">
@@ -56,7 +56,7 @@
       </el-table-column>
       <el-table-column label="操作" width="150">
         <template slot-scope="scope">
-          <el-button type="success" icon="el-icon-view" size="small" title="详情" circle></el-button>
+          <el-button type="success" icon="el-icon-view" size="small" @click="handleView(scope.$index,scope.row)" title="详情" circle></el-button>
           <el-button type="primary" icon="el-icon-edit" size="small" @click="handleEdit(scope.$index,scope.row)" title="编辑" circle></el-button>
           <el-button type="danger" icon="el-icon-delete" size="small" @click="handleDel(scope.$index,scope.row)" title="删除" circle></el-button>
         </template>
@@ -164,11 +164,94 @@
         <el-button type="primary" @click.native="editTransaction" :loading="editLoading">提交</el-button>
       </div>
     </el-dialog>
+    <!--浏览流水子页面-->
+    <el-dialog width="80%" title="流水明细" v-model="viewFormVisible" :close-on-click-modal="false" :visible.sync="viewFormVisible" :append-to-body="true">
+      <el-form :inline="true" :model="addItem" class="demo-form-inline">
+        <el-form-item label="出入方式">
+          <el-select v-model="addItem.flog" suffix-icon="el-icon-date">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="金额">
+          <el-input
+            type="number"
+            prefix-icon="el-icon-edit-outline"
+            v-model="addItem.currencyNumber">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="说明">
+          <el-input
+            prefix-icon="el-icon-edit-outline"
+            v-model="addItem.currencyDetails">
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary">确认添加</el-button>
+        </el-form-item>
+      </el-form>
+      <!--列表-->
+      <el-table :data="items" highlight-current-row v-loading="itemLoading" style="width: 100%;">
+        <el-table-column prop="id" label="编号">
+        </el-table-column>
+        <el-table-column prop="tradeId" label="流水号">
+        </el-table-column>
+        <el-table-column prop="flog" :formatter="formatSex" label="出入方式">
+        </el-table-column>
+        <el-table-column prop="currencyNumber" label="金额">
+        </el-table-column>
+        <el-table-column prop="currencyDetails" label="说明">
+        </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button type="primary" icon="el-icon-edit" size="small" title="编辑" circle></el-button>
+            <el-button type="danger" icon="el-icon-delete" size="small" title="删除" circle></el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!--工具条-->
+      <div>
+        <el-pagination layout="prev, pager, next" @current-change="itemHandleCurrentChange" :page-size="10" :total="itemDataTotal">
+        </el-pagination>
+      </div>
+      <el-form :inline="true" :model="addItem" class="demo-form-inline">
+        <el-form-item label="出入方式">
+          <el-select v-model="addItem.flog" suffix-icon="el-icon-date">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="金额">
+          <el-input
+            type="number"
+            prefix-icon="el-icon-edit-outline"
+            v-model="addItem.currencyNumber">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="说明">
+          <el-input
+            prefix-icon="el-icon-edit-outline"
+            v-model="addItem.currencyDetails">
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary">提交修改</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </section>
 </template>
 
 <script>
-import { getTransactionList, getFinancialType, applyTransaction,updateTransaction,deleteTransaction,downTransaction,outTransactionInfoExcel } from '../../api/api';
+import { getTransactionList, getFinancialType, applyTransaction,updateTransaction,deleteTransaction,getTransactionInfo,downTransaction,outTransactionInfoExcel } from '../../api/api';
 export default {
   name: 'TransactionList',
   data()  {
@@ -182,7 +265,7 @@ export default {
         selectType: ''//用户选择的交易类别
       },
       // 返回的单元格数据
-      logs: [],
+      datas: [],
       // 总数据行数
       dataTotal: 0,
       // 当前页
@@ -224,12 +307,41 @@ export default {
           { min: 2, max: 15, message: '长度在 2 到 15 个字符', trigger: 'blur' }
         ],
         tradeType: [
-          { required: true, message: '请选择公开状态', trigger: 'blur' }
+          { required: true, message: '请选择交易方式', trigger: 'blur' }
         ]
       },
+      // 是否显示流水子页面
+      viewFormVisible: false,
+      viewTradeId: 1,
+      itemLoading: false,
+      // 添加明细
+      addItem:{
+        tradeId:1,
+        flog:2,
+        currencyNumber:0,
+        currencyDetails:''
+      },
+      // 修改明细
+      editItem:{
+        id:1,
+        tradeId:1,
+        flog:2,
+        currencyNumber:0,
+        currencyDetails:''
+      },
+      // 返回的流水单元格数据
+      items: [],
+      // 流水总数据行数
+      itemDataTotal: 0,
+      // 当前页
+      itemNowPage: 1,
     }
   },
   methods:  {
+    //出入转换显示转换
+    formatSex: function (row, column) {
+      return row.flog == 1 ? '存入' : row.flog == 2 ? '取出' : '未知';
+    },
     // 表格页数改变事件
     handleCurrentChange(val) {
       this.nowPage = val;
@@ -298,7 +410,7 @@ export default {
           // 总数据量
           this.dataTotal = data.dateSum;
           // 表格数据
-          this.logs = data.grid;
+          this.datas = data.grid;
         }else if (code === -7) {
           // 未登录或登录失效
           sessionStorage.removeItem('user');
@@ -532,6 +644,46 @@ export default {
       }).catch(() => {
 
       });
+    },
+    // 打开流水明细子页面
+    handleView(index,row){
+      this.viewTradeId = row.tradeId;
+      this.transactionInfo();
+      this.viewFormVisible = true;
+    },
+    //获取流水列表
+    transactionInfo() {
+      this.itemLoading = true;
+      let para = {
+        nowPage: this.itemNowPage,
+        tradeId:this.viewTradeId
+      };
+      //NProgress.start();
+      getTransactionInfo(para).then((datas) => {
+        this.itemLoading = false;
+        let { msg, code, data } = datas;
+        if(code === 0)
+        {
+          // 总数据量
+          this.itemDataTotal = data.dateSum;
+          // 表格数据
+          this.items = data.grid;
+        }else if (code === -7) {
+          // 未登录或登录失效
+          sessionStorage.removeItem('user');
+          this.$router.push('/login');
+        } else {
+          this.$message({
+            message: msg,
+            type: 'error'
+          });
+        }
+      });
+    },
+    // 表格页数改变事件
+    itemHandleCurrentChange(val) {
+      this.itemNowPage = val;
+      this.transactionInfo();
     },
   },
   mounted() {
