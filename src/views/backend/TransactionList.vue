@@ -191,7 +191,7 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">确认添加</el-button>
+          <el-button type="primary" @click="handleAddItem">确认添加</el-button>
         </el-form-item>
       </el-form>
       <!--列表-->
@@ -208,8 +208,8 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" icon="el-icon-edit" size="small" title="编辑" circle></el-button>
-            <el-button type="danger" icon="el-icon-delete" size="small" title="删除" circle></el-button>
+            <el-button type="primary" icon="el-icon-edit" @click="handleViewItem(scope.$index,scope.row)" size="small" title="编辑" circle></el-button>
+            <el-button type="danger" icon="el-icon-delete" @click="handleDeleteItem(scope.$index,scope.row)" size="small" title="删除" circle></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -218,9 +218,9 @@
         <el-pagination layout="prev, pager, next" @current-change="itemHandleCurrentChange" :page-size="10" :total="itemDataTotal">
         </el-pagination>
       </div>
-      <el-form :inline="true" :model="addItem" class="demo-form-inline">
+      <el-form :inline="true" :model="editItem" class="demo-form-inline">
         <el-form-item label="出入方式">
-          <el-select v-model="addItem.flog" suffix-icon="el-icon-date">
+          <el-select v-model="editItem.flog" suffix-icon="el-icon-date">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -233,17 +233,17 @@
           <el-input
             type="number"
             prefix-icon="el-icon-edit-outline"
-            v-model="addItem.currencyNumber">
+            v-model="editItem.currencyNumber">
           </el-input>
         </el-form-item>
         <el-form-item label="说明">
           <el-input
             prefix-icon="el-icon-edit-outline"
-            v-model="addItem.currencyDetails">
+            v-model="editItem.currencyDetails">
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">提交修改</el-button>
+          <el-button type="primary" @click="handleEditItem">提交修改</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -251,7 +251,7 @@
 </template>
 
 <script>
-import { getTransactionList, getFinancialType, applyTransaction,updateTransaction,deleteTransaction,getTransactionInfo,downTransaction,outTransactionInfoExcel } from '../../api/api';
+import { getTransactionList, getFinancialType, applyTransaction,updateTransaction,deleteTransaction,getTransactionInfo,insertTransactioninfo,updateTransactioninfo,deleteTransactioninfo,downTransaction,outTransactionInfoExcel } from '../../api/api';
 export default {
   name: 'TransactionList',
   data()  {
@@ -648,6 +648,7 @@ export default {
     // 打开流水明细子页面
     handleView(index,row){
       this.viewTradeId = row.tradeId;
+      this.addItem.tradeId = row.tradeId;
       this.transactionInfo();
       this.viewFormVisible = true;
     },
@@ -684,6 +685,139 @@ export default {
     itemHandleCurrentChange(val) {
       this.itemNowPage = val;
       this.transactionInfo();
+    },
+    // 流水明细添加
+    handleAddItem(){
+      // 判断所填的数据是否合法
+      if(this.addItem.flog == '' || this.addItem.flog < 0 || this.addItem.currencyNumber < 0 || this.addItem.currencyNumber == '' || this.addItem.currencyDetails == ''){
+        this.$message({
+          message: '金额必须大于等于0，必须选择出入方式,说明必须填写。',
+          type: 'error'
+        });
+        return false;
+      }else {
+        this.itemLoading = true;
+        insertTransactioninfo(this.addItem).then((datas) => {
+          this.itemLoading = false;
+          let { msg, code, data } = datas;
+          if(code === 0)
+          {
+            this.$message({
+              showClose: true,
+              message: '添加成功',
+              type: 'success'
+            });
+            this.addItem = {
+              tradeId:1,
+                flog:2,
+                currencyNumber:0,
+                currencyDetails:''
+            };
+            this.transactionList();
+            this.transactionInfo();
+          }else if (code === -7) {
+            // 未登录或登录失效
+            sessionStorage.removeItem('user');
+            this.$router.push('/login');
+          } else {
+            this.$message({
+              message: msg,
+              type: 'error'
+            });
+          }
+        });
+      }
+    },
+    // 显示要修改的明细
+    handleViewItem(index,row){
+      this.editItem = Object.assign({}, row);
+    },
+    // 修改流水明细
+    handleEditItem(){
+      // 判断所填的数据是否合法
+      if(this.editItem.flog == '' || this.editItem.flog < 0 || this.editItem.currencyNumber < 0 || this.editItem.currencyNumber == '' || this.editItem.currencyDetails == ''){
+        this.$message({
+          message: '金额必须大于等于0，必须选择出入方式,说明必须填写。',
+          type: 'error'
+        });
+        return false;
+      }else {
+        this.itemLoading = true;
+        updateTransactioninfo(this.editItem).then((datas) => {
+          this.itemLoading = false;
+          let { msg, code, data } = datas;
+          if(code === 0)
+          {
+            this.$message({
+              showClose: true,
+              message: '修改成功',
+              type: 'success'
+            });
+            this.editItem = {
+              id:1,
+              tradeId:1,
+              flog:2,
+              currencyNumber:0,
+              currencyDetails:''
+            }
+            this.transactionList();
+            this.transactionInfo();
+          }else if (code === -7) {
+            // 未登录或登录失效
+            sessionStorage.removeItem('user');
+            this.$router.push('/login');
+          } else {
+            this.$message({
+              message: msg,
+              type: 'error'
+            });
+          }
+        });
+      }
+    },
+    // 删除流水明细
+    handleDeleteItem(index, row){
+      this.$confirm("您确定删除该流水明细？", '提示', {
+        type: 'warning'
+      }).then(() => {
+        this.itemLoading = true;
+        //NProgress.start();
+        let para = {
+          id: row.id,
+          tradeId: row.tradeId
+        };
+        deleteTransactioninfo(para).then((datas) => {
+          this.itemLoading = false;
+          let { msg, code, data } = datas;
+          if(code === 0)
+          {
+            if(data === 'End'){
+              // 子记录已经删除干净了，关闭弹框
+              this.viewFormVisible = false;
+            }else{
+              // 还存在子记录，刷新当前弹框表格的数据
+              this.transactionInfo();
+            }
+            this.$message({
+              showClose: true,
+              message: '删除成功',
+              type: 'success'
+            });
+            this.transactionList();
+          }else if (code === -7) {
+            // 未登录或登录失效
+            sessionStorage.removeItem('user');
+            this.$router.push('/login');
+          } else {
+            this.$message({
+              message: msg,
+              type: 'error'
+            });
+          }
+        });
+      }).catch(() => {
+
+      });
     },
   },
   mounted() {

@@ -99,4 +99,9 @@ export const downTransaction= `${backendAPI}/api/financial/outTransactionListExc
 export const outTransactionInfoExcel= `${backendAPI}/api/financial/outTransactionInfoExcel`
 // 获取流水明细
 export const getTransactionInfo = params => { return axios.get(`${backendAPI}/api/financial/transactionInfo`,{ params: params } ).then(res => res.data); };
-
+// 添加流水明细
+export const insertTransactioninfo = params => { return axios.post(`${backendAPI}/api/financial/insertTransactioninfo`,params ).then(res => res.data); };
+// 修改流水明细
+export const updateTransactioninfo = params => { return axios.put(`${backendAPI}/api/financial/updateTransactioninfo`,params ).then(res => res.data); };
+// 删除流水明细
+export const deleteTransactioninfo = params => { return axios.delete(`${backendAPI}/api/financial/deleteTransactioninfo`,{ params: params } ).then(res => res.data); };
