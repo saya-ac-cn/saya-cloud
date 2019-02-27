@@ -105,3 +105,15 @@ export const insertTransactioninfo = params => { return axios.post(`${backendAPI
 export const updateTransactioninfo = params => { return axios.put(`${backendAPI}/api/financial/updateTransactioninfo`,params ).then(res => res.data); };
 // 删除流水明细
 export const deleteTransactioninfo = params => { return axios.delete(`${backendAPI}/api/financial/deleteTransactioninfo`,{ params: params } ).then(res => res.data); };
+// 按天统计流水
+export const totalTransactionForDay = params => { return axios.get(`${backendAPI}/api/financial/totalTransactionForDay`,{ params: params } ).then(res => res.data); };
+// 导出按天统计的报表
+export const outTransactionForDayExcel= `${backendAPI}/api/financial/outTransactionForDayExcel`
+// 按月统计流水
+export const totalTransactionForMonth = params => { return axios.get(`${backendAPI}/api/financial/totalTransactionForMonth`,{ params: params } ).then(res => res.data); };
+// 导出按月统计的报表
+export const outTransactionForMonthExcel= `${backendAPI}/api/financial/outTransactionForMonthExcel`
+// 按年统计流水
+export const totalTransactionForYear = params => { return axios.get(`${backendAPI}/api/financial/totalTransactionForYear`,{ params: params } ).then(res => res.data); };
+// 导出按月统计的报表
+export const outTransactionForYearExcel= `${backendAPI}/api/financial/outTransactionForYearExcel`

@@ -19,6 +19,9 @@ import publishnotes from '@/views/backend/PublishNotes'
 import editnotes from '@/views/backend/EditNotes'
 import planmana from '@/views/backend/PlanMana'
 import transactionlist from '@/views/backend/TransactionList'
+import financialForDay from '@/views/backend/FinancialForDay'
+import financialForMonth from '@/views/backend/FinancialForMonth'
+import financialForYear from '@/views/backend/FinancialForYear'
 
 Vue.use(Router)
 var baseName = 'saya.ac.cn-'
@@ -95,7 +98,9 @@ export default new Router({
       iconCls: 'fa fa-bar-chart', // 图标样式class
       children: [
         { path: '/financial/transactionlist', component: transactionlist, name: '财务流水', hidden: false ,meta:{title: baseName + '财务流水'}},
-        { path: '/main2', component: HelloWorld, name: '财务统计', hidden: false ,meta:{title: baseName + '数据管理'}}
+        { path: '/financial/financialForDay', component: financialForDay, name: '日度报表', hidden: false ,meta:{title: baseName + '日度报表'}},
+        { path: '/financial/financialForMonth', component: financialForMonth, name: '月度报表', hidden: false ,meta:{title: baseName + '月度报表'}},
+        { path: '/financial/financialForYear', component: financialForYear, name: '年度报表', hidden: false ,meta:{title: baseName + '年度报表'}},
       ]
     },
     {
