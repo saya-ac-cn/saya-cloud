@@ -117,3 +117,15 @@ export const outTransactionForMonthExcel= `${backendAPI}/api/financial/outTransa
 export const totalTransactionForYear = params => { return axios.get(`${backendAPI}/api/financial/totalTransactionForYear`,{ params: params } ).then(res => res.data); };
 // 导出按月统计的报表
 export const outTransactionForYearExcel= `${backendAPI}/api/financial/outTransactionForYearExcel`
+// 创建接口
+export const createApi = params => { return axios.post(`${backendAPI}/api/set/api/create`,params ).then(res => res.data); };
+// 修改接口
+export const editApi = params => { return axios.put(`${backendAPI}/api/set/api/edit`,params ).then(res => res.data); };
+// 删除笔记
+export const deleteApi = params => { return axios.delete(`${backendAPI}/api/set/api/delete`,{ params: params } ).then(res => res.data); };
+// 获取接口
+export const getApi = params => { return axios.get(`${backendAPI}/api/set/api/list`,{ params: params } ).then(res => res.data); };
+// 查看数据库备份执行列表
+export const getBackUpDBList = params => { return axios.get(`${backendAPI}/api/oss/db`,{ params: params } ).then(res => res.data); };
+// 下载备份的数据库文件
+export const downloadBackUpDB = `${backendAPI}/api/oss/db/download/`

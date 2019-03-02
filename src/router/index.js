@@ -22,6 +22,9 @@ import transactionlist from '@/views/backend/TransactionList'
 import financialForDay from '@/views/backend/FinancialForDay'
 import financialForMonth from '@/views/backend/FinancialForMonth'
 import financialForYear from '@/views/backend/FinancialForYear'
+import apiMana from '@/views/backend/ApiMana'
+import backUpDB from '@/views/backend/BackUpDB'
+
 
 Vue.use(Router)
 var baseName = 'saya.ac.cn-'
@@ -59,17 +62,17 @@ export default new Router({
       ]
     },
     {
-      path: '/fu',
+      path: '/api',
       component: BackendLayout,
       name: '能力开放',
       iconCls: 'fa el-icon-news', // 图标样式class
       children: [
-        { path: '/fu/login5', component: Login, name: '接口管理', hidden: false ,meta:{title: baseName + '接口管理'}},
-        { path: '/main5', component: HelloWorld, name: '数据管理', hidden: false ,meta:{title: baseName + '数据管理'}}
+        { path: '/api/nama', component: apiMana, name: '接口管理', hidden: false ,meta:{title: baseName + '接口管理'}},
+        { path: '/api/db', component: backUpDB, name: '数据备份', hidden: false ,meta:{title: baseName + '数据备份'}}
       ]
     },
     {
-      path: '/fu',
+      path: '/oss',
       component: BackendLayout,
       name: '数据存储',
       iconCls: 'fa el-icon-document', // 图标样式class
@@ -80,7 +83,7 @@ export default new Router({
       ]
     },
     {
-      path: '/fu',
+      path: '/message',
       component: BackendLayout,
       name: '对外公布',
       iconCls: 'fa el-icon-message', // 图标样式class
@@ -92,7 +95,7 @@ export default new Router({
       ]
     },
     {
-      path: '/fu',
+      path: '/financial',
       component: BackendLayout,
       name: '财务流水',
       iconCls: 'fa fa-bar-chart', // 图标样式class
@@ -104,7 +107,7 @@ export default new Router({
       ]
     },
     {
-      path: '/fu',
+      path: '/message',
       component: BackendLayout,
       name: '成长发展',
       iconCls: 'fa el-icon-star-on', // 图标样式class

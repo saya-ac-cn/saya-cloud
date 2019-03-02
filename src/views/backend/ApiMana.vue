@@ -4,21 +4,10 @@
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true" :model="filters">
         <el-form-item>
-          <el-input type="text" v-model="filters.name" placeholder="按用户名检索" autocomplete="off"></el-input>
+          <el-input type="text" v-model="filters.name" placeholder="按接口名检索" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-select v-model="filters.selectType" placeholder="请选择" @change="(value) =>selectChange(value)">
-            <el-option value="null" label="请选择" selected></el-option>
-            <el-option
-              v-for="item in filters.type"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" v-on:click="getToteBookData">查询</el-button>
+          <el-button type="primary" v-on:click="getData">查询</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" v-on:click="reloadPage">重置</el-button>
@@ -33,13 +22,15 @@
     <el-table :data="datas" highlight-current-row v-loading="listLoading" style="width: 100%;">
       <el-table-column type="index">
       </el-table-column>
-      <el-table-column prop="name" label="笔记簿名">
+      <el-table-column prop="name" label="接口名">
       </el-table-column>
       <el-table-column prop="status" label="状态" :formatter="formatStatus">
       </el-table-column>
-      <el-table-column prop="source" label="创建者">
+      <el-table-column prop="descript" label="描述">
       </el-table-column>
-      <el-table-column prop="notesCount" label="笔记总数">
+      <el-table-column prop="createtime" label="创建日期">
+      </el-table-column>
+      <el-table-column prop="updatetime" label="修改日期">
       </el-table-column>
       <el-table-column label="操作" width="150">
         <template slot-scope="scope">
@@ -63,15 +54,15 @@
       </el-pagination>
     </el-col>
     <!--新增界面-->
-    <el-dialog title="创建笔记簿" v-model="addFormVisible" :close-on-click-modal="false" :visible.sync="addFormVisible" :append-to-body="true">
+    <el-dialog title="创建接口" v-model="addFormVisible" :close-on-click-modal="false" :visible.sync="addFormVisible" :append-to-body="true">
       <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
-        <el-form-item label="笔记簿名" prop="name">
+        <el-form-item label="接口名" prop="name">
           <el-input type="text" v-model="addForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="是否公开">
+        <el-form-item label="是否开放">
           <el-radio-group v-model="addForm.status" prop="status">
-            <el-radio class="radio" :label="1">公开</el-radio>
-            <el-radio class="radio" :label="2">私有</el-radio>
+            <el-radio class="radio" :label="1">开放</el-radio>
+            <el-radio class="radio" :label="2">关闭</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="说明描述" prop="descript">
@@ -84,18 +75,18 @@
       </div>
     </el-dialog>
     <!--编辑界面-->
-    <el-dialog title="修改笔记簿" v-model="editFormVisible" :close-on-click-modal="false" :visible.sync="editFormVisible" :append-to-body="true">
+    <el-dialog title="修改接口" v-model="editFormVisible" :close-on-click-modal="false" :visible.sync="editFormVisible" :append-to-body="true">
       <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-        <el-form-item label="笔记簿名" prop="name">
+        <el-form-item label="接口名" prop="name">
           <el-input type="text" v-model="editForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="是否公开">
+        <el-form-item label="是否开放">
           <el-radio-group v-model="editForm.status" prop="status">
             <el-radio class="radio" :label="1">公开</el-radio>
             <el-radio class="radio" :label="2">私有</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="说明描述" prop="descript">
+        <el-form-item label="接口描述" prop="descript">
           <el-input type="textarea" v-model="editForm.descript"></el-input>
         </el-form-item>
       </el-form>
@@ -108,39 +99,37 @@
 </template>
 
 <script>
-import { createNoteBook, updateNoteBook, deleteNoteBook, getNoteBookList, getNoteBook } from '../../api/api';
+import { getApi, createApi, editApi, deleteApi } from '../../api/api';
 export default {
-  name: 'NoteBook',
+  name: 'ApiMana',
   data()  {
     return  {
       filters: {
-        name:'', // 笔记簿名
-        type: [{value:1,label:'已公开'},{value:2,label:'已屏蔽'}],
-        selectType: ''
+        name: ''
       },
       addFormRules: {
         name: [
-          { required: true, message: '请输入笔记簿名', trigger: 'blur' },
+          { required: true, message: '请输入接口名名', trigger: 'blur' },
           { min: 2, max: 15, message: '长度在 2 到 15 个字符', trigger: 'blur' }
         ],
         status: [
-          { required: true, message: '请选择公开状态', trigger: 'blur' }
+          { required: true, message: '请选择开放状态', trigger: 'blur' }
         ],
         descript: [
-          { required: true, message: '请输入笔记簿说明', trigger: 'blur' },
+          { required: true, message: '请输入接口描述', trigger: 'blur' },
           { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
         ],
       },
       editFormRules: {
         name: [
-          { required: true, message: '请输入笔记簿名', trigger: 'blur' },
+          { required: true, message: '请输入接口名', trigger: 'blur' },
           { min: 2, max: 15, message: '长度在 2 到 15 个字符', trigger: 'blur' }
         ],
         status: [
-          { required: true, message: '请选择公开状态', trigger: 'blur' }
+          { required: true, message: '请选择开放状态', trigger: 'blur' }
         ],
         descript: [
-          { required: true, message: '请输入笔记簿说明', trigger: 'blur' },
+          { required: true, message: '请输入接口描述', trigger: 'blur' },
           { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
         ],
       },
@@ -177,9 +166,9 @@ export default {
     // 状态显示转换
     formatStatus: function (row, column) {
       if (row.status === 1){
-        return '已公开'
+        return '已开放'
       } else if (row.status === 2) {
-        return '已屏蔽'
+        return '已关闭'
       } else {
         return '未知'
       }
@@ -187,32 +176,23 @@ export default {
     // 表格页数改变事件
     handleCurrentChange(val) {
       this.nowPage = val;
-      this.getToteBookData();
+      this.getData();
     },
     // 初始页currentPage、初始每页数据数pagesize和数据data
     handleSizeChange: function (size) {
       this.pageSize = size;
-      this.getToteBookData();
+      this.getData();
     },
-    // select框改变事件
-    selectChange(ele){
-      if(ele == null ||ele == 'null') {
-        this.filters.selectType = null;
-      } else {
-        this.filters.selectType = ele;
-      }
-    },
-    //笔记簿
-    getToteBookData() {
+    //获取列表数据
+    getData() {
       let para = {
+        name: this.filters.name,
         nowPage: this.nowPage,
-        name:this.filters.name,
-        status:this.filters.selectType,
         pageSize: this.pageSize
       };
       this.listLoading = true;
       //NProgress.start();
-      getNoteBookList(para).then((datas) => {
+      getApi(para).then((datas) => {
         this.listLoading = false;
         let { msg, code, data } = datas;
         if(code === 0)
@@ -237,30 +217,20 @@ export default {
       // 重置查询条件
       this.filters.name = ''
       this.nowPage = 1
-      this.filters.selectType = null
-      this.getToteBookData()
+      this.getData()
     },
     handleEdit (index,row) {
-      console.log(row)
       this.editFormVisible = true;
       this.editForm = Object.assign({}, row);
     },
     handleDel (index, row) {
-      var tips = '';
-      if (row.notesCount > 0){
-        tips = '“' + row.name + '”笔记簿下还有：' + row.notesCount + '条笔记，您确认删除该笔记簿及该笔记簿下的所有笔记？'
-      }else{
-        tips = '您确认删除“' + row.name + '”空笔记簿？'
-      }
-
-
-      this.$confirm(tips, '提示', {
+      this.$confirm('您确定删除"'+row.name+'"接口', '提示', {
         type: 'warning'
       }).then(() => {
         this.listLoading = true;
         //NProgress.start();
         let para = { id: row.id };
-        deleteNoteBook(para).then((datas) => {
+        deleteApi(para).then((datas) => {
           this.listLoading = false;
           let { msg, code, data } = datas;
           if(code === 0)
@@ -270,7 +240,7 @@ export default {
               message: '删除成功',
               type: 'success'
             });
-            this.getToteBookData();
+            this.getData();
           }else if (code === -7) {
             // 未登录或登录失效
             sessionStorage.removeItem('user');
@@ -298,7 +268,7 @@ export default {
               status:this.addForm.status,
               descript: this.addForm.descript
             };
-            createNoteBook(para).then((datas) => {
+            createApi(para).then((datas) => {
               this.addLoading = false;
               //NProgress.done();
               let { msg, code, data } = datas;
@@ -311,7 +281,7 @@ export default {
                 });
                 this.$refs['addForm'].resetFields();
                 this.addFormVisible = false;
-                this.getToteBookData();
+                this.getData();
               }else if (code === -7) {
                 // 未登录或登录失效
                 sessionStorage.removeItem('user');
@@ -345,7 +315,7 @@ export default {
               status:this.editForm.status,
               descript: this.editForm.descript
             };
-            updateNoteBook(para).then((datas) => {
+            editApi(para).then((datas) => {
               this.editLoading = false;
               //NProgress.done();
               let { msg, code, data } = datas;
@@ -358,7 +328,7 @@ export default {
                 });
                 this.$refs['editForm'].resetFields();
                 this.editFormVisible = false;
-                this.getToteBookData();
+                this.getData();
               }else if (code === -7) {
                 // 未登录或登录失效
                 sessionStorage.removeItem('user');
@@ -376,7 +346,7 @@ export default {
     },
   },
   mounted() {
-    this.getToteBookData();
+    this.getData();
   }
 }
 </script>

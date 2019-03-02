@@ -1,18 +1,20 @@
 <template>
-  <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px" class="demo-ruleForm login-container">
-    <h3 class="title">系统登录</h3>
-    <el-form-item prop="account">
-      <el-input type="text" v-model="ruleForm2.account" auto-complete="off" placeholder="账号"></el-input>
-    </el-form-item>
-    <el-form-item prop="checkPass">
-      <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off" placeholder="密码"></el-input>
-    </el-form-item>
-    <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>
-    <el-form-item style="width:100%;">
-      <el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit2" :loading="logining">登录</el-button>
-      <!--<el-button @click.native.prevent="handleReset2">重置</el-button>-->
-    </el-form-item>
-  </el-form>
+  <div class="core-div">
+    <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px" class="demo-ruleForm login-container">
+      <h2 class="title">统一身份认证</h2>
+      <el-form-item prop="account">
+        <el-input type="text" v-model="ruleForm2.account" auto-complete="off" placeholder="账号"></el-input>
+      </el-form-item>
+      <el-form-item prop="checkPass">
+        <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off" placeholder="密码"></el-input>
+      </el-form-item>
+      <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>
+      <el-form-item style="width:100%;">
+        <el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit2" :loading="logining">登录</el-button>
+        <!--<el-button @click.native.prevent="handleReset2">重置</el-button>-->
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 
 <script>
@@ -87,16 +89,36 @@
 </script>
 
 <style lang="scss" scoped>
+  .core-div{
+    width: 100vw;
+    height: 100vh;
+    /* 加载背景图 */
+    background-image: url('../../assets/picture/login/login_background1.jpg');
+    /* 背景图垂直、水平均居中 */
+    background-position: center center;
+    /* 背景图不平铺 */
+    background-repeat: no-repeat;
+    /* 当内容高度大于图片高度时，背景图像的位置相对于viewport固定 */
+    background-attachment: fixed;
+    /* 让背景图基于容器大小伸缩 */
+    background-size: cover;
+    background-attachment: fixed;
+  }
   .login-container {
     /*box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);*/
     -webkit-border-radius: 5px;
     border-radius: 5px;
     -moz-border-radius: 5px;
     background-clip: padding-box;
-    margin: 180px auto;
-    width: 350px;
-    padding: 35px 35px 15px 35px;
-    background: #fff;
+    //margin: 180px auto;
+    position: absolute;
+    top: 10em;
+    right: 8em;
+    //width: 350px;
+    width: 300px;
+    padding: 30px 35px 15px 35px;
+    //background: #fff;
+    background-color:rgba(255,255,255,0.3);
     border: 1px solid #eaeaea;
     box-shadow: 0 0 25px #cac6c6;
     .title {

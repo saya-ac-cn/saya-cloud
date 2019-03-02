@@ -2,7 +2,7 @@
   <section>
     <!--工具条-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-      <el-form :inline="true" :model="filters">
+      <el-form :inline="true">
         <el-form-item>
           <el-button type="primary" @click="downloadExcel">导出</el-button>
         </el-form-item>
@@ -99,10 +99,7 @@ export default {
     },
     reloadPage (){
       // 重置查询条件
-      this.filters.selectType = null
       this.nowPage = 1
-      this.filters.beginTime = ''
-      this.filters.endTime = ''
       this.getData()
     },
     // 导出文件
