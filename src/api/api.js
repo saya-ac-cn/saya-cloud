@@ -129,3 +129,5 @@ export const getApi = params => { return axios.get(`${backendAPI}/api/set/api/li
 export const getBackUpDBList = params => { return axios.get(`${backendAPI}/api/oss/db`,{ params: params } ).then(res => res.data); };
 // 下载备份的数据库文件
 export const downloadBackUpDB = `${backendAPI}/api/oss/db/download/`
+// 获取后台监控统计
+export const getDashBoard = params => { return axios.get(`${backendAPI}/api/set/dashBoard`,{ params: params } ).then(res => res.data); };

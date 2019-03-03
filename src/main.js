@@ -15,7 +15,6 @@ Vue.use(Vuex)
 Vue.use(VueWechatTitle)
 // 开启debug模式
 Vue.config.debug = true
-
 // const routers = new VueRouter({
 //   router
 // })

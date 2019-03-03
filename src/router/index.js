@@ -24,7 +24,7 @@ import financialForMonth from '@/views/backend/FinancialForMonth'
 import financialForYear from '@/views/backend/FinancialForYear'
 import apiMana from '@/views/backend/ApiMana'
 import backUpDB from '@/views/backend/BackUpDB'
-
+import dashBoard from '@/views/backend/DashBoard'
 
 Vue.use(Router)
 var baseName = 'saya.ac.cn-'
@@ -58,7 +58,8 @@ export default new Router({
       iconCls: 'fa el-icon-setting', // 图标样式class
       children: [
         { path: '/set/info', component: info, name: '基本信息', hidden: false ,meta:{title: baseName + '基本信息'}},
-        { path: '/set/log', component: Log, name: '操作日志', hidden: false ,meta:{title: baseName + '操作日志'}}
+        { path: '/set/log', component: Log, name: '操作日志', hidden: false ,meta:{title: baseName + '操作日志'}},
+        { path: '/set/dashBoard', component: dashBoard, name: '平台监控', hidden: false ,meta:{title: baseName + '平台监控'}},
       ]
     },
     {
