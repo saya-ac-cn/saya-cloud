@@ -230,7 +230,7 @@
               }
               this.BoardColumn = echarts.init(document.getElementById('chartBoardColumn'));
               this.BoardColumn.setOption({
-                title: { text: '过去的6个月里文件上传量' },
+                title: { text: '过去的6个月里网站留言量' },
                 tooltip: {},
                 xAxis: {
                   data: mongth

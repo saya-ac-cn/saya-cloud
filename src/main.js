@@ -19,23 +19,23 @@ Vue.config.debug = true
 //   router
 // })
 
-// router.beforeEach((to, from, next) => {
-//   console.log(to.path)
-//   if (to.path === '/login') {
-//     sessionStorage.removeItem(sessionStorage.getItem('user'))
-//     console.log('进入到登录页面')
-//   }
-//   // let user = sessionStorage.getItem('user')
-//   let user = getCookie('user')
-//   // console.log((JSON.parse(getCookie('users'))).title)
-//   if (!user && to.path !== '/login') {
-//     console.log('未登录')
-//     next({path: '/login'})
-//   } else {
-//     console.log('继续')
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  console.log(to.path)
+  if (to.path === '/login') {
+    sessionStorage.removeItem(sessionStorage.getItem('user'))
+    console.log('进入到登录页面')
+  }
+  let user = sessionStorage.getItem('user')
+  //let user = getCookie('user')
+  // console.log((JSON.parse(getCookie('users'))).title)
+  if (!user && to.path !== '/login') {
+    console.log('未登录')
+    next({path: '/login'})
+  } else {
+    console.log('继续')
+    next()
+  }
+})
 
 Vue.config.productionTip = false
 
