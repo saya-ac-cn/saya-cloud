@@ -237,7 +237,7 @@
                 },
                 yAxis: {},
                 series: [{
-                  name: '上传数',
+                  name: '留言数',
                   type: 'bar',
                   data: count
                 }]

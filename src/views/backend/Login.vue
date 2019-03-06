@@ -90,8 +90,10 @@
 
 <style lang="scss" scoped>
   .core-div{
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
     width: 100vw;
-    height: 100vh;
     /* 加载背景图 */
     background-image: url('../../assets/picture/login/login_background1.jpg');
     /* 背景图垂直、水平均居中 */

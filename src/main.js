@@ -26,9 +26,10 @@ router.beforeEach((to, from, next) => {
     console.log('进入到登录页面')
   }
   let user = sessionStorage.getItem('user')
-  //let user = getCookie('user')
-  // console.log((JSON.parse(getCookie('users'))).title)
-  if (!user && to.path !== '/login') {
+  if (!user && to.meta.requireAuth) {
+    /**
+     * 如果该页面需要验证，且用户没有登录
+     */
     console.log('未登录')
     next({path: '/login'})
   } else {
