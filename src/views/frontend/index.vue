@@ -28,7 +28,16 @@
             <div class="search-div-tag2"></div>
           </div>
           <div class="search-line2">
-
+            <el-autocomplete
+              class="inline-input search-input"
+              v-model="search"
+              :clearable="true"
+              :fetch-suggestions="querySearch"
+              placeholder="请输入内容"
+              :trigger-on-focus="false"
+              @select="handleSelect"
+            ></el-autocomplete>
+            <el-button class="search-button" icon="el-icon-search"></el-button>
           </div>
         </el-col>
       </el-row>
@@ -49,6 +58,8 @@
     data() {
       return {
         date: new Date(),
+        search: '',
+        restaurants: [],
         interval:'',
         // 打印到版权区域的时间
         copyrightDate: new Date().getFullYear(),
@@ -102,11 +113,29 @@
         this.interval = setInterval(function(){
           that.scollImg();
         },10000)
+      },querySearch(queryString, cb) {
+        if(queryString.trim() === ''){
+          this.search = ''
+          cb([]);
+        }
+        this.$http.jsonp('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',{
+          params:{
+            wd:queryString
+          },
+          jsonp:'cb'
+        }).then(res=>{
+          //console.log(res.data.s);//把百度服务器返回的数据传给arr数组
+          var getData = res.data.s;
+          var result = new Array()
+          for(var i = 0; i < getData.length ; i++){
+            result.push({"value":getData[i]})
+          }
+          cb(result)
+        })
       },
-      //在月份、日期、小时等小于10前面补0
-      padDate(value){
-        return value <10 ? '0' + value:value;
-      },
+      handleSelect(item) {
+        console.log(item);
+      }
     },
     created() {
       this.startInterval();
@@ -124,7 +153,16 @@
     }
   }
 </script>
-
+<style>
+  .search-input .el-input {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .search-input .el-input input{
+    height: 100%;
+    border: none;
+  }
+</style>
 <style lang="scss" scoped>
   /*主要的字体色(导航菜单)*/
   $main-text-color:#8FBC8B;
@@ -272,6 +310,29 @@
             border-bottom-right-radius: 4px;
             border-top-right-radius: 4px;
             background-color: $search-backcolor;
+            .search-input{
+              float: left;
+              height: 100%;
+              border: none;
+              width: 90%;
+              .el-input{
+                width: 100% !important;
+                height: 100% !important;
+                input{
+                  height: 100%;
+                  border: none;
+                }
+              }
+            }
+            .search-button{
+              width: 4em;
+              height: 100%;
+              border: none;
+              float: right;
+            }
+            .search-button:hover{
+              background: transparent;
+            }
           }
         }
       }

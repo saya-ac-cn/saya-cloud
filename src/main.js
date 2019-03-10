@@ -9,10 +9,14 @@ import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import 'font-awesome/css/font-awesome.min.css'
 import VueWechatTitle from 'vue-wechat-title'
+// 导入vue-resource
+import VueResource from 'vue-resource'
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
 Vue.use(VueWechatTitle)
+// 注册resource
+Vue.use(VueResource)
 // 开启debug模式
 Vue.config.debug = true
 // const routers = new VueRouter({
