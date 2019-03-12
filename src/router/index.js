@@ -26,6 +26,7 @@ import apiMana from '@/views/backend/ApiMana'
 import backUpDB from '@/views/backend/BackUpDB'
 import dashBoard from '@/views/backend/DashBoard'
 import index from '@/views/frontend/index'
+import home from '@/views/layout/frontend'
 
 Vue.use(Router)
 var baseName = 'saya.ac.cn-'
@@ -41,6 +42,15 @@ export default new Router({
       hidden: true,
       meta: {
         title: baseName + '首页'
+      }
+    },
+    {
+      path: '/home',
+      component: home,
+      name: '',
+      hidden: true,
+      meta: {
+        title: baseName + '主页'
       }
     },
     {

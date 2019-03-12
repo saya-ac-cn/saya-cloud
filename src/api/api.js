@@ -3,6 +3,10 @@ let base = '';
 // 后台api接口
 let backendAPI = '/backend';
 
+// 百度模糊搜索地址
+export const baiduSearchSelect = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su';
+// 百度搜索地址
+export const baiduSearchWord = 'http://www.baidu.com/s'
 // 登录接口
 export const requestLogin = params => { return axios.post(`${backendAPI}/login`, params).then(res => res.data); };
 // 注销接口

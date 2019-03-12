@@ -33,11 +33,12 @@
               v-model="search"
               :clearable="true"
               :fetch-suggestions="querySearch"
+              @select="handleSelect"
               placeholder="请输入内容"
               :trigger-on-focus="false"
-              @select="handleSelect"
+              @keyup.enter.native="goSearch"
             ></el-autocomplete>
-            <el-button class="search-button" icon="el-icon-search"></el-button>
+            <el-button class="search-button" icon="el-icon-search" v-on:click="goSearch"></el-button>
           </div>
         </el-col>
       </el-row>
@@ -53,6 +54,7 @@
 </template>
 
 <script>
+  import { baiduSearchSelect, baiduSearchWord } from '../../api/api';
   export default {
     name: 'index',
     data() {
@@ -113,12 +115,13 @@
         this.interval = setInterval(function(){
           that.scollImg();
         },10000)
-      },querySearch(queryString, cb) {
+      },
+      querySearch(queryString, cb) {
         if(queryString.trim() === ''){
           this.search = ''
           cb([]);
         }
-        this.$http.jsonp('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',{
+        this.$http.jsonp(baiduSearchSelect,{
           params:{
             wd:queryString
           },
@@ -126,15 +129,24 @@
         }).then(res=>{
           //console.log(res.data.s);//把百度服务器返回的数据传给arr数组
           var getData = res.data.s;
-          var result = new Array()
-          for(var i = 0; i < getData.length ; i++){
-            result.push({"value":getData[i]})
+          if(getData.length > 0){
+            var result = new Array()
+            for(var i = 0; i < getData.length ; i++){
+              result.push({"value":getData[i]})
+            }
+            cb(result)
+          }else{
+            cb([]);
           }
-          cb(result)
         })
       },
+      goSearch(){
+        window.location.href = baiduSearchWord + '?wd=' + this.search
+      },
       handleSelect(item) {
-        console.log(item);
+        // 用户选择
+        //console.log(item.value);
+        window.location.href = baiduSearchWord + '?wd=' + item.value
       }
     },
     created() {
