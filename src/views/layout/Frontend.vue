@@ -3,8 +3,17 @@
       <!--页头区域开始-->
       <header>
         <!--顶部菜单开始-->
-        <nav style="border: 0px">
-          开头
+        <nav>
+          <el-menu
+            v-for="(item,index) in $router.options.routes" :key="index" v-if="item.path === '/index'"
+            default-active="1"
+            class="el-menu-demo"
+            mode="horizontal"
+            background-color="#752b7d"
+            text-color="#fff"
+            active-text-color="#D3D3D3">
+            <el-menu-item v-for="(child,index) in item.children" :index="(index+1).toString()" v-if="!child.hidden" :key="child.path" @click="$router.push(child.path)">{{child.name}}</el-menu-item>
+          </el-menu>
         </nav>
         <!--顶部菜单结束-->
         <!--网站欢迎部分开始-->
@@ -15,8 +24,10 @@
       <!--页头区域结束-->
 
       <!--主体部分开始-->
-      <section>
-        @yield('content')
+      <section class="main-section">
+        <transition name="fade" mode="out-in">
+          <router-view></router-view>
+        </transition>
       </section>
       <!--主体部分结束-->
 
@@ -26,29 +37,27 @@
         <div class="copyright-img"></div>
         <!--版权区域主体-->
         <div class="copyright-content">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-4 col-sm-4 col-xs-12 ">
+              <el-col :xs="24" :md="24" :lg="8" :xl="8">
+            <i class="map-marker"></i>
+            <p>
+              国家工信部域名备案信息：[www.saya.ac.cn/蜀ICP备16013222-2号]<br/>
+              Copyright &copy; 2016-{{copyrightDate}} Saya.ac.cn-暖心阁 All rights reserved
+            </p>
+          </el-col>
+              <el-col :xs="24" :md="24" :lg="8" :xl="8">
                 <i class="glyphicon glyphicon-map-marker map-marker"></i>
                 <p>
                   地址：四川省宜宾市五粮液大道酒圣路8号<br/>
                   邮编：644000
                 </p>
-              </div>
-              <div class="col-md-4 col-sm-4 col-xs-12 ">
+              </el-col>
+              <el-col :xs="24" :md="24" :lg="8" :xl="8">
                 <i class="glyphicon glyphicon-envelope map-marker"></i>
-                <p>saya@saya.ac.cn</p>
-              </div>
-              <div class="col-md-4 col-sm-4 col-xs-12 ">
-                <i class="map-marker"></i>
                 <p>
-                  国家工信部域名备案信息：[www.saya.ac.cn/蜀ICP备16013222-2号]<br/>
-                  Copyright &copy; 2019.Saya.ac.cn All rights reserved
+                  saya@saya.ac.cn<br/>
+                  <a href="javascript:void(0)" target="_blank">网站建议</a>
                 </p>
-              </div>
-              <div class="clearfix"></div>
-            </div>
-          </div>
+              </el-col>
         </div>
       </footer>
     </section>
@@ -56,7 +65,13 @@
 
 <script>
   export default {
-    name: 'frontend'
+    name: 'frontend',
+    data(){
+      return {
+        // 打印到版权区域的时间
+        copyrightDate: new Date().getFullYear()
+      }
+    }
   }
 </script>
 
@@ -67,19 +82,7 @@
     font-weight: bold;
     src: url('../../assets/fonts/minijianqiti.ttf');
   }
-  /*用于应用母版下base-content的样式，注意：在主页中不能应用*/
-  .base-content{
-    background: #e3c6e6;
-    padding: 5em 0px;
-    min-height: 350px;
-    height: auto;
-    width: 100%;
-  }
-  /*栏目的样式*/
-  .menu-name{
-    font-size: 25px;
-    color: #752b7d;
-  }
+
 
   body{
     margin: 0;
@@ -93,6 +96,20 @@
   /*菜单背景*/
   header>nav,.navbar-inverse {
     background-image: -webkit-linear-gradient(top,#752b7d 0,#752b7f 100%);
+  }
+
+  header > nav{
+    border: 0px;
+    padding-left: 10em;
+    width: 100%;
+    position:fixed;
+    top:0;
+    left:0;
+  }
+
+  .main-section{
+    padding-left: 10em;
+    padding-right: 10em;
   }
 
   /*logo引导部分文字颜色*/
@@ -111,6 +128,7 @@
 
   /*欢迎部分div*/
   .banner{
+    margin-top: 5em;
     background:url('../../assets/picture/layout/banner.png') no-repeat;
     background-size:cover;
     -webkit-background-size:cover;
@@ -118,53 +136,6 @@
     -o-background-size:cover;
     -ms-background-size:cover;
     min-height:500px;
-  }
-
-  /*栏目标题*/
-  .menu-title{
-    padding: 1em 0px;
-  }
-
-  .news_time {
-    color:#5c307d;
-    background: #edeaf1;
-    width: 20%;
-    height: auto;
-    border: 1px solid #d8d8d8;
-    text-align: center;
-    font-size: 12px;
-    float: left;
-    _display: inline;
-    padding: 5px 5px;
-  }
-
-  .news_time span {
-    display: block;
-    font-size: 24px;
-    line-height: 24px;
-    padding: 8px 0 2px 0;
-  }
-
-  .news_content {
-    margin-left: 25%;
-  }
-
-  .news_content div{
-    width: 100%;
-    height: auto
-  }
-
-  .news_content .news_content_tiele{
-    color: #22132D;
-    line-height: 22px;
-    font-size: 18px;
-  }
-
-  .news_content .news_content_value{
-    color: #777;
-    font-size:13px;
-    padding-top: 8px;
-    font-family: inherit;
   }
 
   /*版权区域*/
@@ -217,6 +188,16 @@
     font-family: 'Play-Regular';
   }
 
+  .copyright-content p a{
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .copyright-content p a:hover{
+    color:#D3D3D3;
+    text-decoration: none;
+  }
+
 
   @media (max-width: 1366px){
     /*欢迎div*/
@@ -254,11 +235,6 @@
     .copyright-content p{
       font-size: 12px;
     }
-    /*栏目的样式*/
-    .menu-name{
-      font-size: 25px;
-      color: #752b7d;
-    }
   }
 
   @media (max-width: 1024px){
@@ -277,11 +253,6 @@
     /*版权区域文本*/
     .copyright-content p{
       font-size: 0.5em;
-    }
-    /*栏目的样式*/
-    .menu-name{
-      font-size: 22px;
-      color: #752b7d;
     }
   }
 
@@ -302,11 +273,6 @@
     .copyright-content p{
       font-size: 1em;
     }
-    /*栏目的样式*/
-    .menu-name{
-      font-size: 20px;
-      color: #752b7d;
-    }
   }
 
   @media (max-width: 640px) {
@@ -325,11 +291,6 @@
     /*版权区域文本*/
     .copyright-content p{
       font-size: 1em;
-    }
-    /*栏目的样式*/
-    .menu-name{
-      font-size: 19px;
-      color: #752b7d;
     }
   }
 
@@ -350,11 +311,69 @@
     .copyright-content p{
       font-size: 1em;
     }
-    /*栏目的样式*/
-    .menu-name{
-      font-size: 18px;
-      color: #752b7d;
-    }
+  }
+</style>
+<style>
+  /*用于应用母版下base-content的样式，注意：在主页中不能应用*/
+  .base-content{
+    /*background: #e3c6e6;*/
+    /*padding: 5em 0px;*/
+    min-height: 350px;
+    height: auto;
+    width: 100%;
+  }
+
+  /*栏目标题*/
+  .menu-title{
+    padding: 1em 0px;
+  }
+
+  /*栏目的样式*/
+  .menu-name{
+    font-size: 25px;
+    color: #752b7d;
+  }
+
+  .news_time {
+    color:#5c307d;
+    background: #edeaf1;
+    width: 20%;
+    height: auto;
+    border: 1px solid #d8d8d8;
+    text-align: center;
+    font-size: 12px;
+    float: left;
+    _display: inline;
+    padding: 5px 5px;
+  }
+
+  .news_time span {
+    display: block;
+    font-size: 24px;
+    line-height: 24px;
+    padding: 8px 0 2px 0;
+  }
+
+  .news_content {
+    margin-left: 25%;
+  }
+
+  .news_content div{
+    width: 100%;
+    height: auto
+  }
+
+  .news_content .news_content_tiele{
+    color: #22132D;
+    line-height: 22px;
+    font-size: 18px;
+  }
+
+  .news_content .news_content_value{
+    color: #777;
+    font-size:13px;
+    padding-top: 8px;
+    font-family: inherit;
   }
 
 </style>

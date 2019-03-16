@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import BackendLayout from '@/views/layout/Backend'
-import HelloWorld from '@/views/backend/UploadLogo'
 import Login from '@/views/backend/Login'
 import Log from '@/views/backend/Log'
 import info from '@/views/backend/BasicInfo'
@@ -26,7 +25,8 @@ import apiMana from '@/views/backend/ApiMana'
 import backUpDB from '@/views/backend/BackUpDB'
 import dashBoard from '@/views/backend/DashBoard'
 import index from '@/views/frontend/index'
-import home from '@/views/layout/frontend'
+import FrontendLayout from '@/views/layout/Frontend'
+import news from '@/views/frontend/news'
 
 Vue.use(Router)
 var baseName = 'saya.ac.cn-'
@@ -41,17 +41,24 @@ export default new Router({
       name: '',
       hidden: true,
       meta: {
-        title: baseName + '首页'
+        title: baseName + '首页',
+        requireAuth: false
       }
     },
     {
-      path: '/home',
-      component: home,
+      path: '/index',
+      component: FrontendLayout,
       name: '',
       hidden: true,
-      meta: {
-        title: baseName + '主页'
-      }
+      children: [
+        { path: '/news', component: news, name: '网站首页', hidden: false ,meta:{title: baseName + '网站首页',requireAuth: false}},
+        { path: '/news2', component: news, name: '关于个人', hidden: false ,meta:{title: baseName + '关于个人',requireAuth: false}},
+        { path: '/news3', component: news, name: '消息动态', hidden: false ,meta:{title: baseName + '消息动态',requireAuth: false}},
+        { path: '/news4', component: news, name: '文档下载', hidden: false ,meta:{title: baseName + '文档下载',requireAuth: false}},
+        { path: '/news5', component: news, name: '随笔记录', hidden: false ,meta:{title: baseName + '随笔记录',requireAuth: false}},
+        { path: '/news6', component: news, name: '计划安排', hidden: false ,meta:{title: baseName + '计划安排',requireAuth: false}},
+        { path: '/news7', component: news, name: '留言反馈', hidden: false ,meta:{title: baseName + '留言反馈',requireAuth: false}},
+      ]
     },
     {
       path: '/login',
@@ -59,7 +66,8 @@ export default new Router({
       name: '',
       hidden: true,
       meta: {
-        title: baseName + '统一认证入口'
+        title: baseName + '统一认证入口',
+        requireAuth: false
       }
     },
     {

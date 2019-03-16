@@ -7,13 +7,10 @@
     </div>
     <el-header class="this-header">
         <el-col :span="19" :offset="1" class="header-center">
-          <ul>
-            <li><a href="javascript:void(0)">网站首页</a></li>
-            <li><a href="javascript:void(0)">关于个人</a></li>
-            <li><a href="javascript:void(0)">消息动态</a></li>
-            <li><a href="javascript:void(0)">随笔记录</a></li>
-            <li><a href="javascript:void(0)">计划安排</a></li>
-            <li><a href="javascript:void(0)">留言反馈</a></li>
+          <ul v-for="(item,index) in $router.options.routes" :key="index" v-if="item.path === '/index'">
+            <li v-for="(child,index) in item.children" :index="(index+1).toString()" v-if="!child.hidden" :key="child.path">
+              <a v-bind:href="child.path">{{child.name}}</a>
+            </li>
           </ul>
         </el-col>
         <el-col :span="3" :offset="1" style="color:#dbdbdb" class="header-center">
@@ -46,7 +43,7 @@
     <el-footer class="this-copright">
       <el-row :gutter="20" style="width: 100%">
         <el-col :span="20" :offset="2">
-          Copyright &copy; 2016-{{copyrightDate}} &nbsp; saya.ac.cn-暖心阁 版权所有<br>国家工信部域名备案信息：蜀ICP备16013222号-2
+          Copyright &copy; 2016-{{copyrightDate}} &nbsp; Saya.ac.cn-暖心阁 版权所有<br>国家工信部域名备案信息：蜀ICP备16013222号-2
         </el-col>
       </el-row>
     </el-footer>
