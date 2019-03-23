@@ -27,6 +27,7 @@ import dashBoard from '@/views/backend/DashBoard'
 import index from '@/views/frontend/index'
 import FrontendLayout from '@/views/layout/Frontend'
 import news from '@/views/frontend/news'
+import NotFound from '@/views//404.vue'
 
 Vue.use(Router)
 var baseName = 'saya.ac.cn-'
@@ -51,9 +52,9 @@ export default new Router({
       name: '',
       hidden: true,
       children: [
-        { path: '/news', component: news, name: '网站首页', hidden: false ,meta:{title: baseName + '网站首页',requireAuth: false}},
+        { path: '/home', redirect: '/', name: '网站首页', hidden: false ,meta:{title: baseName + '网站首页',requireAuth: false}},
         { path: '/news2', component: news, name: '关于个人', hidden: false ,meta:{title: baseName + '关于个人',requireAuth: false}},
-        { path: '/news3', component: news, name: '消息动态', hidden: false ,meta:{title: baseName + '消息动态',requireAuth: false}},
+        { path: '/news', component: news, name: '消息动态', hidden: false ,meta:{title: baseName + '消息动态',requireAuth: false}},
         { path: '/news4', component: news, name: '文档下载', hidden: false ,meta:{title: baseName + '文档下载',requireAuth: false}},
         { path: '/news5', component: news, name: '随笔记录', hidden: false ,meta:{title: baseName + '随笔记录',requireAuth: false}},
         { path: '/news6', component: news, name: '计划安排', hidden: false ,meta:{title: baseName + '计划安排',requireAuth: false}},
@@ -148,6 +149,23 @@ export default new Router({
         { path: '/message/notes/publish', component: publishnotes, name: '创建笔记', hidden: true ,meta:{title: baseName + '创建笔记',requireAuth: true}},
         { path: '/message/notes/edit', component: editnotes, name: '编辑笔记', hidden: true ,meta:{title: baseName + '编辑笔记',requireAuth: true}}
       ]
+    },
+    {
+      path: '/404',
+      component: NotFound,
+      name: '',
+      hidden: true,
+      meta: {
+        requireAuth: false
+      }
+    },
+    {
+      path: '*',
+      hidden: true,
+      redirect: { path: '/404' },
+      meta: {
+        requireAuth: false
+      }
     }
   ]
 })

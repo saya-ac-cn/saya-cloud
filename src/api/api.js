@@ -3,6 +3,9 @@ let base = '';
 // 后台api接口
 let backendAPI = '/backend';
 
+// 前台api接口
+let frontendAPI = '/frontend/Pandora';
+
 // 百度模糊搜索地址
 export const baiduSearchSelect = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su';
 // 百度搜索地址
@@ -135,3 +138,6 @@ export const getBackUpDBList = params => { return axios.get(`${backendAPI}/api/o
 export const downloadBackUpDB = `${backendAPI}/api/oss/db/download/`
 // 获取后台监控统计
 export const getDashBoard = params => { return axios.get(`${backendAPI}/api/set/dashBoard`,{ params: params } ).then(res => res.data); };
+
+// 前台部分
+export const queryNews = params => { return axios.get(`${frontendAPI}/news`,{ params: params } ).then(res => res.data); };

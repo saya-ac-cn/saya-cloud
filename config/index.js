@@ -17,6 +17,11 @@ module.exports = {
         target: vars.backendApi, //设置调用接口域名和端口号别忘了加http
         changeOrigin: true
       },
+      // 访问前台Api代理
+      '/frontend': {
+        target: vars.backendApi, //设置调用接口域名和端口号别忘了加http
+        changeOrigin: true
+      },
       // 访问文件服务器代理
       '/files': {
         target: vars.backendApi, //设置调用接口域名和端口号别忘了加http

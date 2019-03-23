@@ -6,23 +6,22 @@
           <i class="el-icon-caret-right"></i>消息动态
         </div>
       </div>
-      <div id="datagrid">
-        <div v-if="datas !='null'" v-for="data in datas" class="row newsitem">
-          <div class="col-xs-1">
-            <div class="yearmonthday"><span>@{{data.day}}</span> @{{data.year}}.@{{data.month}}</div>
-          </div>
-          <div class="col-xs-offset-1 col-xs-10 newstitle">
-            <a class="news_content_tiele" v-bind:href="['/news/view/'+data.id+'.html']" target="_blank">@{{data.topic}}</a>
-          </div>
-          <div class="clearfix visible-xs"></div>
+      <div id="datagrid" v-loading="listLoading">
+        <div v-if="datas !='null'" v-for="data in datas" class="newsitem">
+          <el-col :xs="2" :sm="1" :md="1" :lg="1" :xl="1">
+            <div class="yearmonthday"><span>{{data.day}}</span> {{data.year}}.{{data.month}}</div>
+          </el-col>
+          <el-col :offset="1" class="newstitle">
+            <a class="news_content_tiele" v-bind:href="['/news/view/'+data.id+'.html']" target="_blank">{{data.topic}}</a>
+          </el-col>
         </div>
-        <div v-else class="row newsitem" style="justify-content:center;">
+        <div v-else class="newsitem" style="justify-content:center;">
           动态好像没有了诶
         </div>
         <div v-if="nextpage != null" class="row newsitem" style="justify-content:center;">
-          <a v-on:click="loadMore(nextpage)" title="加载下一页" style="font-size: 2em"><i class="glyphicon glyphicon-eye-open"></i></a>
+          <a v-on:click="loadMore(nextpage)" title="加载下一页" style="font-size: 2em"><i class="el-icon-view"></i></a>
         </div>
-        <div v-else class="row newsitem" style="justify-content:center;">
+        <div v-else class="newsitem" style="justify-content:center;">
           已经加载完动态了
         </div>
       </div>
@@ -31,41 +30,54 @@
 </template>
 
 <script>
+  import { queryNews } from '../../api/api';
   export default {
     name: 'home',
-    data: {
-      nextpage: '',
-      datas: '',
+    data () {
+      return {
+        nextpage: '',
+        datas: '',
+        listLoading: false
+      }
     },
     methods: {
+      loadMore:function(nextpage){
+        this.loadData(nextpage);
+      },
+      //获取列表数据
       loadData(nowpage) {
-        $(".loader").fadeIn();
-        $.ajax({
-          type: "GET",//规定请求的类型
-          url: "/api/frontend/news/"+nowpage,//请求地址
-          dataType:"json",//预期服务器返回的数据类型
-          success:function(data){//收到后台的响应
-            if(data.code == 0)
-            {
-              rendering(data.data);
-              $(".loader").fadeOut(2000);
-            }
-            else
-            {
-              _error('没有数据');
-              $(".loader").fadeOut(2000);
-            }
-          },
-          error: function (data) {//没有收到请求
-            _error('数据获取失败');
-            $(".loader").fadeOut(2000);
-            return false;
+        let para = {
+          nowPage: nowpage,
+          pageSize: 10
+        };
+        this.listLoading = true;
+        //NProgress.start();
+        queryNews(para).then((datas) => {
+          this.listLoading = false;
+          let { msg, code, data } = datas;
+          if(code === 0)
+          {
+            // 总数据量
+            //this.dataTotal = data.dateSum;
+            // 表格数据
+            //this.datas = data.grid;
+            this.rendering(data);
+            console.log(data)
+          }else if (code === -7) {
+            // 未登录或登录失效
+            sessionStorage.removeItem('user');
+            this.$router.push('/login');
+          } else {
+            this.$message({
+              message: msg,
+              type: 'error'
+            });
           }
         });
       },
       //渲染动态
       rendering(data) {
-        if(!$.isEmptyObject(data))
+        if(JSON.stringify(data) !== '{}')
         {
           //对新闻动态进行二次处理
           for(var i in data.grid) {
@@ -76,37 +88,84 @@
             data.grid[i].year=b[0];
             data.grid[i].day=b[2];
           }
+          console.log(data)
           //第一页采用直接覆盖的显示方式
           if(data.pageNow == 1 || data.pageNow == '1')
           {
-            NewsVue.datas = data.grid;//绑定到Vue
+            this.datas = data.grid;//绑定到Vue
           }
           else
           {
-            NewsVue.datas= NewsVue.datas.concat(data.grid);//追加，合并
+            this.datas= this.datas.concat(data.grid);//追加，合并
           }
         }
         else
         {
-          NewsVue.datas = null;
+          console.log('-----')
+          this.datas = null;
         }
         //显示是否加载下一页(当前页是最后一页)
-        if(data.pageNow == data.maxPage)
+        if(data.pageNow == data.totalPage)
         {
-          NewsVue.nextpage = null;
+          this.nextpage = null;
         }
         else
         {
-          NewsVue.nextpage = data.nextPage;
+          this.nextpage = data.pageNow + 1;
         }
       }
     },
     mounted() {
-      this.getData();
+      this.loadData();
     }
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  .container{
+    .menu-title{
+      border-bottom: 2px solid #edeaf1;
+    }
 
+    #datagrid{
+      /*在动态页引入新的样式*/
+      .yearmonthday {
+        border: 1px solid #edeaf1;
+        color: #5b317d;
+        background: #edeaf1;
+        width: 58px;
+        text-align: center;
+        font-size: 12px;
+        float: left;
+        _display: inline;
+        padding-bottom: 5px;
+
+        span {
+          display: block;
+          font-size: 24px;
+          line-height: 24px;
+          padding: 8px 0 2px 0;
+          zoom: 1;
+        }
+      }
+      .newstitle{
+        font-size: 1.2em;
+        vertical-align: middle;
+        display: inline-block;
+        a{
+          color: #5b317d;
+          text-decoration: none;
+        }
+      }
+      .newsitem
+      {
+        border-bottom: 1px dotted #e8e6e6;
+        align-items:center;
+        display:flex;/*Flex布局*/
+        display:-webkit-flex;
+        padding-top: 1em;
+        padding-bottom: 1em;
+      }
+    }
+  }
 </style>
