@@ -26,6 +26,7 @@ import backUpDB from '@/views/backend/BackUpDB'
 import dashBoard from '@/views/backend/DashBoard'
 import index from '@/views/frontend/index'
 import FrontendLayout from '@/views/layout/Frontend'
+import file from '@/views/frontend/files'
 import news from '@/views/frontend/news'
 import NotFound from '@/views//404.vue'
 
@@ -55,7 +56,7 @@ export default new Router({
         { path: '/home', redirect: '/', name: '网站首页', hidden: false ,meta:{title: baseName + '网站首页',requireAuth: false}},
         { path: '/news2', component: news, name: '关于个人', hidden: false ,meta:{title: baseName + '关于个人',requireAuth: false}},
         { path: '/news', component: news, name: '消息动态', hidden: false ,meta:{title: baseName + '消息动态',requireAuth: false}},
-        { path: '/news4', component: news, name: '文档下载', hidden: false ,meta:{title: baseName + '文档下载',requireAuth: false}},
+        { path: '/file', component: file, name: '文档下载', hidden: false ,meta:{title: baseName + '文档下载',requireAuth: false}},
         { path: '/news5', component: news, name: '随笔记录', hidden: false ,meta:{title: baseName + '随笔记录',requireAuth: false}},
         { path: '/news6', component: news, name: '计划安排', hidden: false ,meta:{title: baseName + '计划安排',requireAuth: false}},
         { path: '/news7', component: news, name: '留言反馈', hidden: false ,meta:{title: baseName + '留言反馈',requireAuth: false}},

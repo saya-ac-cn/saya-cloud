@@ -55,7 +55,7 @@
       </el-pagination>
     </el-col>
     <!--编辑界面-->
-    <el-dialog title="上传壁纸" v-model="addFormVisible" :close-on-click-modal="false" :visible.sync="addFormVisible" :append-to-body="true">
+    <el-dialog title="上传文件" v-model="addFormVisible" :close-on-click-modal="false" :visible.sync="addFormVisible" :append-to-body="true">
       <el-form :model="addForm" label-width="80px" ref="addForm">
         <el-upload
           ref="upload"

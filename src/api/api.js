@@ -140,4 +140,9 @@ export const downloadBackUpDB = `${backendAPI}/api/oss/db/download/`
 export const getDashBoard = params => { return axios.get(`${backendAPI}/api/set/dashBoard`,{ params: params } ).then(res => res.data); };
 
 // 前台部分
+// 获取动态列表
 export const queryNews = params => { return axios.get(`${frontendAPI}/news`,{ params: params } ).then(res => res.data); };
+// 获取文件列表
+export const queryFile = params => { return axios.get(`${frontendAPI}/file`,{ params: params } ).then(res => res.data); };
+// 下载文件
+export const downloadFiles = `${frontendAPI}/files/download/`
