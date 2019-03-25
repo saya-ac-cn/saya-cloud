@@ -4,7 +4,8 @@ let base = '';
 let backendAPI = '/backend';
 
 // 前台api接口
-let frontendAPI = '/frontend/Pandora';
+let publicAPI = '/frontend';
+let frontendAPI = publicAPI + '/Pandora';
 
 // 百度模糊搜索地址
 export const baiduSearchSelect = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su';
@@ -146,3 +147,7 @@ export const queryNews = params => { return axios.get(`${frontendAPI}/news`,{ pa
 export const queryFile = params => { return axios.get(`${frontendAPI}/file`,{ params: params } ).then(res => res.data); };
 // 下载文件
 export const downloadFiles = `${frontendAPI}/files/download/`
+// 获取行程安排
+export const queryPlan = params => { return axios.get(`${frontendAPI}/plan`,{ params: params } ).then(res => res.data); };
+// 留言
+export const writeboard = params => { return axios.post(`${publicAPI}/write/board`,params ).then(res => res.data); };
