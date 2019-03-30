@@ -12,7 +12,7 @@ export const baiduSearchSelect = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6
 // 百度搜索地址
 export const baiduSearchWord = 'http://www.baidu.com/s'
 // 登录接口
-export const requestLogin = params => { return axios.post(`${backendAPI}/login`, params).then(res => res.data); };
+export const requestLogin = params => { return axios.post(`${backendAPI}/login`, params,).then(res => res.data); };
 // 注销接口
 export const requestLogout = params => { return axios.post(`${backendAPI}/logout`, params).then(res => res.data); };
 // 获取日志接口
@@ -24,7 +24,7 @@ export const downloadLogExcel = `${backendAPI}/api/set/log/excel`
 // 上传头像
 export const uploadLogo = params => { return axios.post(`${backendAPI}/api/set/uploadlogo`,params ).then(res => res.data); };
 // 获取个人信息
-export const getPersonal = params => { return axios.get(`${backendAPI}/api/set/personal`,params ).then(res => res.data); };
+export const getPersonal = params => { return axios.get(`${backendAPI}/api/set/personal`,{ params: params}).then(res => res.data); };
 // 修改密码
 export const setPassword = params => { return axios.put(`${backendAPI}/api/set/password`,params ).then(res => res.data); };
 // 修改用户信息
@@ -151,3 +151,7 @@ export const downloadFiles = `${frontendAPI}/files/download/`
 export const queryPlan = params => { return axios.get(`${frontendAPI}/plan`,{ params: params } ).then(res => res.data); };
 // 留言
 export const writeboard = params => { return axios.post(`${publicAPI}/write/board`,params ).then(res => res.data); };
+// 获取笔记簿
+export const queryNotebook = params => { return axios.get(`${frontendAPI}/notebook`,{ params: params } ).then(res => res.data); };
+// 获取笔记
+export const queryNote = params => { return axios.get(`${frontendAPI}/notes`,{ params: params } ).then(res => res.data); };

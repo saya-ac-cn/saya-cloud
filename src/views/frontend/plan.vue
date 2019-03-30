@@ -8,7 +8,7 @@
       </div>
       <el-col :span="24" id="topmenu">
         <div style="float: left;width: 30%;height: 100%;text-align: left;line-height: 45px;cursor: pointer;"><span v-on:click="buttonQuery(-1)" ><i class="el-icon-arrow-left"></i></span></div>
-        <div style="float: left;width: 40%;height: 100%;text-align: center;font-size: 20px;line-height: 45px">{{ this.filters.date }}</div>';
+        <div style="float: left;width: 40%;height: 100%;text-align: center;font-size: 20px;line-height: 45px">{{ this.filters.date }}</div>
         <div style="float: right;width: 28%;height: 100%;text-align: right;line-height: 45px;cursor: pointer;"><span v-on:click="buttonQuery(+1)"><i class="el-icon-arrow-right"></i></span></div>
       </el-col>
       <el-col :span="24">

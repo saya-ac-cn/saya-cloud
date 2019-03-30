@@ -25,19 +25,29 @@ Vue.config.debug = true
 
 router.beforeEach((to, from, next) => {
   console.log(to.path)
-  if (to.path === '/login') {
-    sessionStorage.removeItem(sessionStorage.getItem('user'))
-    console.log('进入到登录页面')
-  }
   let user = sessionStorage.getItem('user')
-  if (!user && to.meta.requireAuth) {
+  console.log(user)
+  if(to.meta.requireAuth){
+    // 该页面需要认证
+    if(user === null){
+      /**
+       * 如果该页面需要验证，且用户没有登录
+       */
+      console.log('未登录')
+      sessionStorage.removeItem(sessionStorage.getItem('user'))
+      next({path: '/login'})
+    }else{
+      /**
+       * 已认证
+       */
+      console.log('认证通过，继续~')
+      next()
+    }
+  }else{
     /**
-     * 如果该页面需要验证，且用户没有登录
+     * 无须认证的页面，放行
      */
-    console.log('未登录')
-    next({path: '/login'})
-  } else {
-    console.log('继续')
+    console.log('无须认证，继续~')
     next()
   }
 })

@@ -30,6 +30,7 @@ import file from '@/views/frontend/files'
 import news from '@/views/frontend/news'
 import plan from '@/views/frontend/plan'
 import board from '@/views/frontend/board'
+import note from '@/views/frontend/note'
 import NotFound from '@/views//404.vue'
 
 Vue.use(Router)
@@ -59,9 +60,10 @@ export default new Router({
         { path: '/news2', component: news, name: '关于个人', hidden: false ,meta:{title: baseName + '关于个人',requireAuth: false}},
         { path: '/news', component: news, name: '消息动态', hidden: false ,meta:{title: baseName + '消息动态',requireAuth: false}},
         { path: '/file', component: file, name: '文档下载', hidden: false ,meta:{title: baseName + '文档下载',requireAuth: false}},
-        { path: '/news5', component: news, name: '随笔记录', hidden: false ,meta:{title: baseName + '随笔记录',requireAuth: false}},
+        { path: '/note', component: note, name: '随笔记录', hidden: false ,meta:{title: baseName + '随笔记录',requireAuth: false}},
         { path: '/plan', component: plan, name: '计划安排', hidden: false ,meta:{title: baseName + '计划安排',requireAuth: false}},
         { path: '/board', component: board, name: '留言反馈', hidden: false ,meta:{title: baseName + '留言反馈',requireAuth: false}},
+        { path: '/board1', component: board, name: '留言反馈', hidden: true ,meta:{title: baseName + '留言反馈',requireAuth: false}},
       ]
     },
     {
