@@ -9,27 +9,27 @@
       <el-form :model="addForm" label-position="top" :rules="addFormRules" ref="addForm" label-width="100px">
         <el-form-item label="姓名" prop="name">
           <el-col :span="11">
-            <el-input v-model="addForm.name"></el-input>
+            <el-input class="input-item" v-model="addForm.name"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="Phone" prop="phone">
           <el-col :span="11">
-            <el-input v-model="addForm.phone"></el-input>
+            <el-input class="input-item" v-model="addForm.phone"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="Email" prop="email">
           <el-col :span="11">
-            <el-input v-model="addForm.email"></el-input>
+            <el-input class="input-item" v-model="addForm.email"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="内容" prop="content">
           <el-col :span="11">
-            <el-input type="textarea" v-model="addForm.content"></el-input>
+            <el-input class="input-item" type="textarea" v-model="addForm.content"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('addForm')" :loading="addLoading">提交</el-button>
-          <el-button @click="resetForm('addForm')">重置</el-button>
+          <el-button class="input-item" type="primary" @click="submitForm('addForm')" :loading="addLoading">提交</el-button>
+          <el-button class="input-item" @click="resetForm('addForm')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -113,5 +113,7 @@
 </script>
 
 <style scoped>
-
+.input-item{
+  z-index: -1;
+}
 </style>

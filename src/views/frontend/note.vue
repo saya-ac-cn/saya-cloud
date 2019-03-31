@@ -167,6 +167,7 @@
       .note-lable{
         margin: 1em;
         .item{
+          z-index: -1;
           margin-right: 2em;
           margin-bottom: 1em;
         }

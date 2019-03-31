@@ -11,6 +11,8 @@ import 'font-awesome/css/font-awesome.min.css'
 import VueWechatTitle from 'vue-wechat-title'
 // 导入vue-resource
 import VueResource from 'vue-resource'
+import hljs from 'highlight.js'
+import 'highlight.js/styles/googlecode.css'
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -22,6 +24,12 @@ Vue.config.debug = true
 // const routers = new VueRouter({
 //   router
 // })
+Vue.directive('highlight', (el) => {
+  let blocks = el.querySelectorAll('pre code')
+  blocks.forEach((block) => {
+    hljs.highlightBlock(block)
+  })
+})
 
 router.beforeEach((to, from, next) => {
   console.log(to.path)

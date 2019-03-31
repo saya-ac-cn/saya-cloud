@@ -155,3 +155,5 @@ export const writeboard = params => { return axios.post(`${publicAPI}/write/boar
 export const queryNotebook = params => { return axios.get(`${frontendAPI}/notebook`,{ params: params } ).then(res => res.data); };
 // 获取笔记
 export const queryNote = params => { return axios.get(`${frontendAPI}/notes`,{ params: params } ).then(res => res.data); };
+// 获取动态详情
+export const queryNewsInfo = params => { return axios.get(`${frontendAPI}/news/info`,{ params: params } ).then(res => res.data); };
