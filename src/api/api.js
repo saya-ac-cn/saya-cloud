@@ -157,3 +157,5 @@ export const queryNotebook = params => { return axios.get(`${frontendAPI}/notebo
 export const queryNote = params => { return axios.get(`${frontendAPI}/notes`,{ params: params } ).then(res => res.data); };
 // 获取动态详情
 export const queryNewsInfo = params => { return axios.get(`${frontendAPI}/news/info`,{ params: params } ).then(res => res.data); };
+// 获取笔记详情
+export const queryNotesInfo = params => { return axios.get(`${frontendAPI}/notes/info`,{ params: params } ).then(res => res.data); };

@@ -32,6 +32,7 @@ import plan from '@/views/frontend/plan'
 import board from '@/views/frontend/board'
 import note from '@/views/frontend/note'
 import newsView from '@/views/frontend/news-view'
+import notesView from '@/views/frontend/notes-view'
 import NotFound from '@/views//404.vue'
 
 Vue.use(Router)
@@ -64,7 +65,8 @@ export default new Router({
         { path: '/note', component: note, name: '随笔记录', hidden: false ,meta:{title: baseName + '随笔记录',requireAuth: false}},
         { path: '/plan', component: plan, name: '计划安排', hidden: false ,meta:{title: baseName + '计划安排',requireAuth: false}},
         { path: '/board', component: board, name: '留言反馈', hidden: false ,meta:{title: baseName + '留言反馈',requireAuth: false}},
-        { path: '/news/info', component: newsView, name: '留言反馈', hidden: true ,meta:{title: baseName + '动态详情',requireAuth: false}},
+        { path: '/news/info', component: newsView, name: '动态详情', hidden: true ,meta:{title: baseName + '动态详情',requireAuth: false}},
+        { path: '/notes/info', component: notesView, name: '笔记详情', hidden: true ,meta:{title: baseName + '笔记详情',requireAuth: false}}
       ]
     },
     {

@@ -22,7 +22,7 @@
             <div class="yearmonthday"><span>{{data.day}}</span> {{data.year}}.{{data.month}}</div>
           </el-col>
           <el-col :offset="1" class="newstitle">
-            <a class="news_content_tiele" v-bind:href="['/news/view/'+data.id+'.html']" target="_blank">{{data.topic}}</a>
+            <a class="news_content_tiele" v-bind:href="['/notes/info?id='+data.id]" target="_blank">{{data.topic}}</a>
           </el-col>
         </div>
         <div v-else class="newsitem" style="justify-content:center;">

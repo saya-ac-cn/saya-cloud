@@ -4,13 +4,13 @@
       <div id="print-area" v-loading="listLoading">
         <div class="menu-title">
           <div class="menu-name">
-            <i class="el-icon-caret-right"></i>消息动态
+            <i class="el-icon-caret-right"></i>笔记详情
           </div>
         </div>
         <div v-if="datas != null" class="news-name">{{datas.now.topic}}</div>
         <div v-if="datas != null" class="news-tool">
           <div class="subtitle">
-            {{datas.now.createtime}} &nbsp;&nbsp;来源：{{datas.now.source}}
+            {{datas.now.createtime}} &nbsp;&nbsp;来源：{{datas.now.notebook.source}}
           </div>
           <div class="tools-share">
             <el-tag v-for="(tag,index) in datas.now.label" :key="tag" :type="badgeType[(index+1)%5]" class="lable-item">{{tag}}</el-tag>
@@ -24,18 +24,18 @@
             <ul>
               <li class="pre-li">
                 <span>上一篇</span>
-                <a v-if="datas.pre != null" v-bind:href="['/news/info?id='+datas.pre.id]">{{datas.pre.topic}}</a>
+                <a v-if="datas.pre != null" v-bind:href="['/notes/info?id='+datas.pre.id]">{{datas.pre.topic}}</a>
                 <a v-else>已是第一篇了</a>
               </li>
               <li class="next-li">
                 <span>下一篇</span>
-                <a v-if="datas.next != null" v-bind:href="['/news/info?id='+datas.next.id]">{{datas.next.topic}}</a>
+                <a v-if="datas.next != null" v-bind:href="['/notes/info?id='+datas.next.id]">{{datas.next.topic}}</a>
                 <a v-else>已是最后一篇了</a>
               </li>
             </ul>
           </div>
         </div>
-        <div v-if="datas == null" class="empty-news">该动态不存在</div>
+        <div v-if="datas == null" class="empty-news">该笔记不存在</div>
       </div>
     </div>
   </div>
@@ -44,16 +44,16 @@
 <script>
   //直接组件引入
   import VueMarkdown from 'vue-markdown'
-  import { queryNewsInfo } from '../../api/api';
+  import { queryNotesInfo } from '../../api/api';
   export default {
-    name: 'news-view',
+    name: 'notes-view',
     components: {
       VueMarkdown
     },
     data(){
       return {
         datas: '',
-        // 动态编号
+        // 笔记编号
         id:null,
         listLoading: false,
         badgeType: ["primary","success","warning","danger","info"],
@@ -78,17 +78,17 @@
         let para = {
           id: this.id
         };
-        queryNewsInfo(para).then((datas) => {
+        queryNotesInfo(para).then((datas) => {
           this.listLoading = false;
           let { msg, code, data } = datas;
           if(code === 0)
           {
-            var thisNews = data.now;
+            var thisNotes = data.now;
             this.datas = data
-            this.datas.now.topic = thisNews.topic
-            document.title = thisNews.topic
-            this.datas.now.label = (thisNews.label).split(';')
-            this.datas.now.content = thisNews.content
+            this.datas.now.topic = thisNotes.topic
+            document.title = thisNotes.topic
+            this.datas.now.label = (thisNotes.label).split(';')
+            this.datas.now.content = thisNotes.content
             //console.log(data.now)
           }else {
             this.$message({
