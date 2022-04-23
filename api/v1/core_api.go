@@ -37,10 +37,12 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusOK, response.GenerateErrorResponseByCode(response.ERROR_PASSWORD_WRONG))
 		return
 	}
+	// 密码脱敏
 	user.Password = ""
 	// 开启事务示例
 	tx, _ := model.PrimaryDataSource.Begin()
 	defer tx.Rollback()
+	// 记录日志
 	model.RecordLog(tx, c, record.USER_LOGIN)
 	//model.BatchRecordLog(tx, c, "100002")
 	tx.Commit()
@@ -87,6 +89,7 @@ func setToken(c *gin.Context, user model.User) {
 		Username: user.User,
 		StandardClaims: jwt.StandardClaims{
 			NotBefore: time.Now().Unix() - 100,
+			// TODO 密码过期时间暂定2个小时
 			ExpiresAt: time.Now().Unix() + 7200,
 			Issuer:    "Saya-Cloud",
 		},

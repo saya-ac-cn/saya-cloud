@@ -75,6 +75,7 @@ func JwtToken() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var code int
 		tokenHeader := c.Request.Header.Get("Authorization")
+		// 未传输token
 		if tokenHeader == "" {
 			code = response.ERROR_TOKEN_EXIST
 			c.JSON(http.StatusOK, gin.H{
@@ -84,7 +85,7 @@ func JwtToken() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
+		// 发现不是标准的token，Bearer空格token值
 		checkToken := strings.Split(tokenHeader, " ")
 		if len(checkToken) == 0 {
 			c.JSON(http.StatusOK, gin.H{
