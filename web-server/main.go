@@ -4,18 +4,19 @@ import (
 	"context"
 	"fmt"
 	hystrixGo "github.com/afex/hystrix-go/hystrix"
-	httpClient "github.com/asim/go-micro/plugins/client/http/v3"
-	"github.com/asim/go-micro/plugins/registry/consul/v3"
+	httpClient "github.com/asim/go-micro/plugins/client/http/v4"
+	"github.com/asim/go-micro/plugins/registry/consul/v4"
 	// "github.com/asim/go-micro/plugins/registry/etcd/v3"
-	"github.com/asim/go-micro/plugins/wrapper/breaker/hystrix/v3"
-	"github.com/asim/go-micro/v3/client"
-	"github.com/asim/go-micro/v3/registry"
-	"github.com/asim/go-micro/v3/selector"
-	"github.com/asim/go-micro/v3/web"
+	"github.com/asim/go-micro/plugins/wrapper/breaker/hystrix/v4"
+	"go-micro.dev/v4/client"
+	"go-micro.dev/v4/registry"
+	"go-micro.dev/v4/selector"
+	"go-micro.dev/v4/web"
 	"web-server/router"
 )
 
 var etcdReg registry.Registry
+
 // https://zhuanlan.zhihu.com/p/389732281
 // https://gocn.vip/profile/yang759126596/topic
 
@@ -36,10 +37,10 @@ func main() {
 		web.Registry(etcdReg),
 		// 为注册的服务添加Metadata，指定请求协议为http->在使用go-plugins插件进行服务调用时，在服务发现时为选择器添加了过滤，限定了请求协议，要求Metadata的键值必须为"protocol":"http"，否则返回的服务节点切片长度将为0。
 		// https://blog.csdn.net/MrKorbin/article/details/110941595
-		web.Metadata(map[string]string{"protocol":"http"}),
+		web.Metadata(map[string]string{"protocol": "http"}),
 	)
 	microselector := selector.NewSelector(
-		selector.Registry(etcdReg),              //传入etcd注册
+		selector.Registry(etcdReg),                //传入etcd注册
 		selector.SetStrategy(selector.RoundRobin), //指定查询机制
 	)
 	microClient := httpClient.NewClient(
@@ -50,15 +51,15 @@ func main() {
 	// 重试时间窗口
 	hystrixGo.DefaultSleepWindow = 5000
 	// 超时时间窗口
-	hystrixGo.DefaultTimeout =5000
+	hystrixGo.DefaultTimeout = 5000
 	// 默认最大失败次数
 	hystrixGo.DefaultVolumeThreshold = 3
-	req := microClient.NewRequest("financial-server", "/users", map[string]string{})
+	req := microClient.NewRequest("financial", "/users", map[string]string{})
 	var resp map[string]interface{}
 	err := microClient.Call(context.Background(), req, &resp)
 	if err == nil {
 		fmt.Println(resp)
-	}else {
+	} else {
 		fmt.Println(err)
 	}
 	microService.Run()
