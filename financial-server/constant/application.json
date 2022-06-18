@@ -1,0 +1,22 @@
+{
+  "server": {
+    "mode": "debug",
+    "port": ":8001",
+    "jwt_key": "69ln96lk15"
+  },
+  "amap": {
+    "url": "https://restapi.amap.com/v5/ip",
+    "key": "-------"
+  },
+  "database": {
+    "show_sql": false,
+    "primary": {
+      "data_source": "primary",
+      "driver_name": "mysql",
+      "data_source_name": "-----",
+      "max_life_time": 120,
+      "max_open_conns": 10,
+      "max_idle_conns": 5
+    }
+  }
+}
